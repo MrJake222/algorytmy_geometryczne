@@ -23,6 +23,7 @@ def create_visibility_graph(figures, plotter=None):
             v.figure = figure
             L.append(l)
 
+    if plotter != None: plotter.init_limits(P)
 
     # stworzenie grafu widoczności
     vg = VisibilityGraph(P)
