@@ -8,7 +8,7 @@ from Sweeper import Sweeper
 from helpers import orient, dist, intersection
 
 
-def create_visibility_graph(figures):
+def create_visibility_graph(figures, plotter=None):
     # utworzenie listy krawędzi oraz dodanie do wierzchołków informacji o incydentnych krawędziach
     L = []
     P = []
@@ -58,10 +58,14 @@ def create_visibility_graph(figures):
             if orient(Sweeper.p, line.s, Sweeper.w) != 0 and orient(Sweeper.p, line.t, Sweeper.w) != 0 and intersection(line, initial_sweep_line):
                 T.add(line)
 
+        if plotter != None: plotter.new_partial_plot()
+
         prev_w = None
         for i in range(len(Q)):
             w = Q[i]
             Sweeper.w = w
+
+            if plotter != None: plotter.partial_plot(L, P, vg, Sweeper)
 
             if w.figure == p.figure:
                 if w.has_line_to(p):
@@ -106,6 +110,8 @@ def create_visibility_graph(figures):
                     T.remove(l)
 
             prev_w = w
+
+        if plotter != None: plotter.sum_up(L, P, vg, Sweeper)
 
     # print(vg.graph)
     return vg
