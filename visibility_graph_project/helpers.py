@@ -19,6 +19,9 @@ def dist_p_to_intersection(p, w, line):
 def intersection(line1, line2):
     a, b, c, d = line1.s, line1.t, line2.s, line2.t
 
+    if a == c or a == d or b == c or b == d:
+        return False
+
     W = (b.x - a.x) * (c.y - d.y) - (b.y - a.y) * (c.x - d.x)
     Wt = (c.x - a.x) * (c.y - d.y) - (c.y - a.y) * (c.x - d.x)
     Wr = (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x)
