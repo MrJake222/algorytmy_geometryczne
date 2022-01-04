@@ -1,0 +1,205 @@
+\documentclass[12pt]{article}
+
+\usepackage{amssymb} % symbol kąta
+\usepackage[polish]{babel} % polskie nazwy
+\usepackage[T1]{fontenc} % polskie znaki
+\usepackage[margin=1.0in]{geometry} % marginesy
+\usepackage[utf8]{inputenc}
+\usepackage{listingsutf8} % bloki kodu
+\usepackage{color} % kolory
+\usepackage{indentfirst} % wcięcie w pierwszej linii paragrafu
+\usepackage{graphicx} % obrazy
+\usepackage{float} % dla image [H]
+
+% bez odstępu w itemize
+\let\tempone\itemize
+\let\temptwo\enditemize
+\renewenvironment{itemize}{\tempone\setlength{\itemsep}{0cm}}{\temptwo}
+
+\definecolor{lbcolor}{rgb}{0.9,0.9,0.9}  
+\graphicspath{ {img} }
+% obrazek {nazwa.png}{opis}
+\newcommand{\imgcustomsize}[3]{
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=#3\textwidth]{#1}
+		\caption{#2}
+		\label{#1}
+	\end{figure}
+}
+\newcommand{\img}[2]{\imgcustomsize{#1}{#2}{0.5}}
+
+% tabela z wynikami {nazwa.txt}{opis}
+\newcommand{\tab}[2]{
+\begin{table}[H]
+	\centering
+	\caption{#2}
+	\vspace{0.3cm}
+	\begin{tabular}{l|l|c|c}
+		\lhead{$x$}&\thead{$y$}&\thead{Odc. 1}&\thead{Odc. 2}\\
+		\hline
+		\input{#1}
+	\end{tabular}
+\end{table}
+}
+
+% nagłowek tabeli
+\newcommand*{\thead}[1]{\multicolumn{1}{|c}{\bfseries #1}}
+\newcommand*{\lhead}[1]{\multicolumn{1}{c}{\bfseries #1}}
+
+\begin{document}
+	\lstset{backgroundcolor=\color{lbcolor}, language=Python, inputencoding=utf8}
+	
+	\title{Graf widzialności \\
+		\vspace{0.2cm}
+		\large Algorytmy geometryczne \\
+		\large Projekt}
+	\author{Norbert Morawski\\Dariusz Piwowarski}
+	
+	\maketitle
+	\tableofcontents
+	\pagebreak
+	
+	\section{Informacje techniczne}
+	% \hspace{0.5cm}
+	\subsection{Platforma}
+		\begin{tabular}{l|l}
+			System&Arch Linux/Windows 10\\
+			Architektura&\texttt{x86\_64}\\
+			Język programowania&Python\\
+			Wersja interpretera&3.9.7\\
+		\end{tabular}
+
+	\subsection{Użyte biblioteki i narzędzia}
+		\begin{tabular}{l|l}
+			NumPy&1.21.2\\
+			MatPlotLib&3.4.3\\
+			Jupyer Notebook&6.4.4
+		\end{tabular}
+	
+	\subsection{Opis programu}
+		% TODO może coś więcej tutaj
+		Program został napisany w języku Python. Interfejs dla użytkownika dostępny jest w pliku \lstinline|.ipynb|, wykorzystuje on narzędzie Jupyter Notebook.
+	
+	\subsection{Moduły}
+		\paragraph{\lstinline|create_visibility_graph.py|}
+			Zawiera implementację algorytmu obliczania grafu widzialności.
+		
+		\paragraph{\lstinline|VisibilityGraph.py|}
+			Klasa zawierająca reprezentację finalnego grafu widzialności.
+		
+		\paragraph{\lstinline|Sweeper.py|}
+			Klasa zawierająca aktualny stan miotły (punkt początkowy i punkt końcowy)
+		
+		\paragraph{\lstinline|shortest_path.py|}
+			Implementacja algorytmu Dijkstry, który wyznacza najkrótszą ścieżkę pomiędzy przeszkodami.
+		
+		\paragraph{\lstinline|Point.py|}
+			Klasa zawierająca reprezentację punktu na płaszczyźnie.
+			
+		\paragraph{\lstinline|Line.py|}
+			Klasa zawierająca reprezentację odcinka na płaszczyźnie. Wewnętrznie przechowuje jego początek i koniec.
+					
+		\paragraph{\lstinline|Figure.py|}
+			Klasa zawierająca reprezentację figury na płaszczyźnie. Wewnętrznie przechowuje listę punktów należących do figury, w kolejności przeciwnej do ruchu wskazówek zegara.
+		
+		\paragraph{\lstinline|plotter/Plotter.py|}
+			Klasa obsługująca generowane wykresów krok-po-kroku.
+			
+		\paragraph{\lstinline|plotter/SequencePlotter.py|}
+			Klasa pomocnicza obsługująca generowanie osobnych wykresów w osobnych plikach, za każdym razem inkrementując numer wykresu.
+
+		\paragraph{\lstinline|plotter/Plot.py|}
+			Klasa pomocnicza zawierająca podstawowe funkcje obsługi wykresów.
+
+		\paragraph{\lstinline|plot_tool.py|}
+			Dostarczone narzędzie graficzne.
+			
+		\paragraph{\lstinline|helpers.py|}
+			Zawiera pomocnicze funkcje:
+			\begin{itemize}
+				\item \lstinline|dist_p_to_intersection| -- oblicza odległość do przecięcia
+				\item \lstinline|intersection| -- zwraca przecięcie dwóch linii
+				\item \lstinline|orient| -- oblicza wyznacznik i zwraca jak ułożone są punkty 
+				\item \lstinline|dist| -- oblicza odległość dwóch punktów
+			\end{itemize}
+	
+	\section{Informacje użytkownika}
+	
+	\subsection{Uruchomienie programu}
+		% TODO może coś więcej tutaj
+		Należy w katalogu z plikiem \lstinline|project.ipynb| uruchomić narzędzie Jupyter Notebook.
+	
+	\subsection{Funkcje programu}
+			% TODO Tutaj opis Jupytera
+	
+	\section{Sprawozdanie}
+	
+	\subsection{Opis problemu}
+		\paragraph{Graf widzialności}
+			Jest to graf gdzie zbiorem wierzchołków jest zbiór wierzchołków na płaszczyźnie, a krawędzie istnieją tylko kiedy wierzchołki na płaszczyźnie "widzą się", tzn. nie istnieje pomiędzy nimi przeszkoda w postaci figury.
+		
+		\paragraph{Wstęp}
+			Trywialny algorytm wymagałby sprawdzenia każdej pary wierzchołków w czasie $ O(n^2) $. Każde takie sprawdzenie wymagałoby przejrzenia wszystkich innych wierzchołków w czasie $ O(n) $, co prowadziłoby do algorytmu o złożoności $ O(n^3) $. Jednak jeżeli wykorzystamy zrównoważone drzewo binarne do wyszukiwania przeszkód, jesteśmy w stanie obniżyć złożoność do poziomu $ O(n^2 \cdot log(n)) $.
+		
+		\paragraph{Algorytm}
+			Problem sprowadza się do wyznaczenia widzianych wierzchołków dla każdego z $ n $ punktów. Do tego celu wykorzystamy algorytm zamiatania. Tym razem jednak nie zamiatamy płaszczyzny wzdłuż żadnej z osi, lecz zamiatamy płaszczyznę obracając miotłę.
+			
+		\paragraph{Zdarzenia i stan miotły}
+		Zdarzeniami będą punkty na płaszczyźnie, a struktura stanu będzie przechowywać aktualnie przecinane odcinki w kolejność od najbliższej punktu zaczepienia do najdalszej.
+	
+	\subsection{Algorytm}
+		Zamiatanie płaszczyzny będzie odbywać się wg następujących kroków:
+		\begin{itemize}
+			\item Zaczep miotłę w badanym punkcie i zwróć ją w kierunku dodatnie półosi OX,
+			\item Obracaj miotłą zgodnie ze wskazówkami zegara,
+			\item Rozpatruj zdarzenia i aktualizuj strukturę stanu, dodając do grafu widzialności odpowiednie krawędzie.
+		\end{itemize}
+	
+		\subsection{Struktura zdarzeń}
+			Struktura zdarzeń została zaimplementowana przy użyciu listy. 
+			
+			\paragraph{Opis sortowania}
+				Zbiór punktów najpierw dzielony jest na dwa podzbiory względem tego czy dany punkt jest na lewo czy na prawo od aktualnie rozpatrywanego punktu (w przypadku gdy leżą one w tym samym miejscu podział następuje po wartości współrzędnej $ x $). Następnie każda część jest sortowana osobno wbudowaną funkcją $ sort $ (sortowanie stabilne) dwukrotnie. W pierwszym sortowaniu kluczem jest odległość od punktu zaczepienia, w drugim stosowany jest wyznacznik aby posortować punkty zgodnie z ruchem wskazówek zegara.
+			
+			\vspace{\baselineskip} % newline
+			Ostatecznie otrzymujemy posortowaną strukturę zdarzeń gdzie punkty występują w kolejności zgodnie z ruchem wskazówek zegara, a punkty współliniowe ułożone są od najbliższych do najdalszych.
+			
+			\paragraph{Złożoność}
+				Struktura zdarzeń nie jest modyfikowana w trakcie działania algorytmu, stąd jej wkład do złożoności jest ograniczony przez sortowanie i wynosi $ O(n \cdot log(n)) $.
+		
+		\subsection{Struktura stanu}
+			Struktura stanu wykorzystuje posortowaną listę (opartą na drzewie binarnym) \lstinline|SortedList| z biblioteki \lstinline|sortedcontainers|. Gwarantuje ona czas operacji rzędu $ O(log(n)) $.
+			
+			\paragraph{Opis działania}
+				Gdy miotła natrafia na punkt, brane są pod uwagę krawędzie incydentne z nim. Jeżeli krawędź została już zamieciona, jest ona usuwana ze struktury. Gdy nie została jeszcze zamieciona, jest dodawana do niej. Test po której stronie znajduje się krawędź jest przeprowadzany przy użyciu wyznacznika.
+				
+			\paragraph{Złożoność}
+				Na strukturze stanu wykonamy maksymalnie wykonamy $ n $ operacji wstawiania i usuwania, co daje nam czas działania rzędu $ O(n \cdot log(n)) $.
+		
+		\subsection{Wykrywanie przecięć}
+			Gdy zaczynamy rozpatrywać punkt, testujemy czy jest on widziany z punktu zaczepienia miotły.  W algorytmie spotykamy następujące przypadki:
+			
+			\img{przyp1.jpg}{Przypadek graniczny}
+				W tym przypadku najpierw dodany do struktury zostaje punkt $ A $. Następnie rozpatrujemy widoczność punktu $ E $. Algorytm najpierw sprawdza czy punkt poprzednio rozpatrywany należy do tej samej figury. Jeżeli tak, sprawdza czy odcinek $ AE $ przecina wnętrze figury. Jeżeli nie, punkt jest widoczny. Dopuszczamy widoczność wzdłuż krawędzi.
+				
+			\img{przyp2.jpg}{Przypadek graniczny}
+				Gdy punkt $ F $ leży ponad miotłą odcinek $ AE $ przecina wnętrze figury więc punkt $ E $ nie jest widoczny.
+			
+			\img{przyp3.jpg}{Przypadek graniczny}
+				Tutaj punkt $ D $ będzie widoczny. Sprawdzamy czy punkt $ A $ jest widoczny. Jeżeli tak, to wyszukujemy w strukturze stanu czy pomiędzy punktami $ A $ i $ D $ znajduje się jakakolwiek krawędź. Jeżeli nie, rozpatrywany punkt jest widoczny.
+				
+			\img{przyp4.jpg}{Przypadek graniczny}
+				W tym przykładzie punkt $ G $ nie będzie widoczny ponieważ pomiędzy punktem $ A $ (który jest widoczny) a punktem $ G $ w strukturze stanu znajdują się dwie krawędzie.
+				
+			\img{przyp5.jpg}{Przypadek graniczny}
+				W tym przykładzie punkt $ D $ nie ma współliniowych poprzedników w strukturze zdarzeń. W takim przypadku wyszukujemy pierwszy odcinek w strukturze stanu i jeżeli taki istnieje i przecina miotłę to punkt nie będzie widoczny. Szukanie przeszkód przecinających odcinek $ DG $ w tym przypadku nie ma sensu. $ G $ również jest niewidoczny.
+			
+			\img{przyp6.jpg}{Przypadek graniczny}
+				Tutaj odcinek $ AB $ pokrywa się z miotłą. Dopuszczamy widoczność wzdłuż krawędzi. Punkt $ D $ będzie widoczny.
+			
+			% TODO Testy & wyniki
+	
+
+	
+\end{document}
