@@ -94,14 +94,14 @@ class Plot:
         self.ax.yaxis.set_minor_locator(AutoMinorLocator(2))
         return self
 
-    def points_scatter(self, points, s=10, zorder=0, color="C0"):
+    def points_scatter(self, points, s=10, zorder=0, color="C0", annotations=None):
         x = [p.x for p in points]
         y = [p.y for p in points]
         self.ax.scatter(x, y, color=color, s=s, zorder=zorder)
 
-        # for p in points:
-        #     if p.annotation != None:
-        #         self.ax.annotate(p.annotation, (p.x, p.y), xytext=(0, 6),textcoords="offset points") # was (3,3)
+        if annotations != None:
+            for i, p in enumerate(points):
+                self.ax.annotate(annotations[i], (p.x, p.y), xytext=(0, 6),textcoords="offset points") # was (3,3)
 
     def lines_draw(self, lines, points=True, size=10, linewidth=1.5, zorder=1, color="C0"):
         for line in lines:
