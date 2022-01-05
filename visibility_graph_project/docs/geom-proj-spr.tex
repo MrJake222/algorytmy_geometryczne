@@ -100,41 +100,99 @@
 		Program został napisany w języku Python. Interfejs dla użytkownika dostępny jest w pliku \lstinline|.ipynb|, wykorzystuje on narzędzie Jupyter Notebook.
 	
 	\subsection{Moduły}
+		Poniżej znajduje się opis modułów i metod w nich występujących.
+	
 		\paragraph{\lstinline|create_visibility_graph.py|}
 			Zawiera implementację algorytmu obliczania grafu widzialności.
+			\begin{itemize}
+				\item \lstinline|find_internal_lines| -- Implementuje algorytm znajdywania przekątnych w figurach. Złożoność $ O(n^2) $,
+				\item \lstinline|create_visibility_graph| -- Tworzy graf  widzialności.
+			\end{itemize}
 		
 		\paragraph{\lstinline|VisibilityGraph.py|}
 			Klasa zawierająca reprezentację finalnego grafu widzialności.
+			\begin{itemize}
+				\item \lstinline|__init__| -- Konstruktor,
+				\item \lstinline|add_edge| -- Dodaje krawędź do grafu,
+				\item \lstinline|get_points| -- Zwraca listę krotek reprezentujących zbiór wierzchołków grafu,
+				\item \lstinline|get_lines| -- Zwraca listę krawędzi,
+				\item \lstinline|get_lines_separately| -- Zwraca listę list krawędzi z podziałem na wierzchołki początkowe krawędzi,
+				\item \lstinline|__repr__| -- Zwraca reprezentację tekstową klasy.
+			\end{itemize}
 		
 		\paragraph{\lstinline|Sweeper.py|}
 			Klasa zawierająca aktualny stan miotły (punkt początkowy i punkt końcowy)
 		
 		\paragraph{\lstinline|shortest_path.py|}
 			Implementacja algorytmu Dijkstry, który wyznacza najkrótszą ścieżkę pomiędzy przeszkodami.
+			\begin{itemize}
+				\item \lstinline|dijkstra| -- Implementuje algorytm Dijkstry. Złożoność $ O(n \cdot log(n)) $,
+				\item \lstinline|shortest_path| -- Funkcja pomocnicza do wywołania algorytmu Dijkstry.  Dodaje do grafu punkt początkowy i końcowy.
+			\end{itemize}
 		
 		\paragraph{\lstinline|Point.py|}
 			Klasa zawierająca reprezentację punktu na płaszczyźnie.
+			\begin{itemize}
+				\item \lstinline|__init__| -- Konstruktor,
+				\item \lstinline|with_line| -- Dodaje krawędź incydentną z tym wierzchołkiem,
+				\item \lstinline|has_line_to| -- Sprawdza czy wierzchołek jest incydentny z podaną krawędzią,
+				\item \lstinline|has_internal_line_to| -- Sprawdza czy krawędż pomiędzy tym a podanym wierzchołkiem to przekątna, 
+				\item \lstinline|__repr__| -- Zwraca reprezentację tekstową klasy.
+			\end{itemize}
 			
 		\paragraph{\lstinline|Line.py|}
 			Klasa zawierająca reprezentację odcinka na płaszczyźnie. Wewnętrznie przechowuje jego początek i koniec.
+			\begin{itemize}
+				\item \lstinline|__init__| -- Konstruktor,
+				\item \lstinline|__repr__| -- Zwraca reprezentację tekstową klasy,
+				\item \lstinline|__eq__| -- Sprawdza czy linie są sobie równe (porównuje czy mają takie same końce i początki),
+				\item \lstinline|__gt__| -- Sprawdza czy linia następuje po podanej linii w strukturze stanu.
+			\end{itemize}
 					
 		\paragraph{\lstinline|Figure.py|}
 			Klasa zawierająca reprezentację figury na płaszczyźnie. Wewnętrznie przechowuje listę punktów należących do figury, w kolejności przeciwnej do ruchu wskazówek zegara.
+			\begin{itemize}
+				\item \lstinline|__init__| -- Konstruktor,
+				\item \lstinline|__repr__| -- Zwraca reprezentację tekstową klasy.
+			\end{itemize}
 		
 		\paragraph{\lstinline|plotter/Plotter.py|}
 			Klasa obsługująca generowane wykresów krok-po-kroku.
+			\begin{itemize}
+				\item \lstinline|__init__| -- Konstruktor,
+				\item \lstinline|init_limits| -- Pobiera maksymalne i minimalne współrzędne punktów w grafie,
+				\item \lstinline|new_partial_plot| -- Tworzy nowy częściowy wykres,
+				\item \lstinline|partial_plot| -- Rysuje nowy częściowy wykres,
+				\item \lstinline|sum_up| -- Rysuje podsumowanie jednej iteracji zewnętrznej pętli algorytmu.
+			\end{itemize}
 			
 		\paragraph{\lstinline|plotter/SequencePlotter.py|}
 			Klasa pomocnicza obsługująca generowanie osobnych wykresów w osobnych plikach, za każdym razem inkrementując numer wykresu.
+			\begin{itemize}
+				\item \lstinline|__init__| -- Konstruktor,
+				\item \lstinline|next| -- Tworzy nowy wykres.
+			\end{itemize}
 
+		% TODO opisujemy to?
 		\paragraph{\lstinline|plotter/Plot.py|}
 			Klasa pomocnicza zawierająca podstawowe funkcje obsługi wykresów.
 
+		% TODO opisujemy to?
 		\paragraph{\lstinline|plot_tool.py|}
 			Dostarczone narzędzie graficzne.
 			
+		\paragraph{\lstinline|plot_tool_helpers.py|}
+			\begin{itemize}
+				% TODO nie wiem
+				\item \lstinline|visibility_graph_scenes| -- 
+				\item \lstinline|visibility_graph_scenes_separately| -- 
+				\item \lstinline|shortest_path_scene| -- 
+				\item \lstinline|get_figures_from_plot| -- 
+				\item \lstinline|get_points_from_plot| -- 
+			\end{itemize}
+			
 		\paragraph{\lstinline|helpers.py|}
-			Zawiera pomocnicze funkcje:
+			Zawiera pomocnicze funkcje.
 			\begin{itemize}
 				\item \lstinline|dist_p_to_intersection| -- oblicza odległość do przecięcia
 				\item \lstinline|intersection| -- zwraca przecięcie dwóch linii
@@ -273,6 +331,6 @@
 			\tab{res/results.txt}{Reprezentacja grafu widzialności poprzez pary punktów}
 			
 
-% TODO Testy jakieś
+% TODO Testy jakieś\textbf{d}
 % TODO bibliografia
 \end{document}
