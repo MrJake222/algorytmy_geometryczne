@@ -6,6 +6,7 @@ class Point:
         self.visible = False
         self.line_to = []
         self.line_to_points_set = set()
+        self.internal_line_to_points_set = set()
 
     def with_line(self, point_line):
         self.line_to.append(point_line)
@@ -14,6 +15,9 @@ class Point:
 
     def has_line_to(self, point):
         return point in self.line_to_points_set
+
+    def has_internal_line_to(self, point):
+        return point in self.internal_line_to_points_set
 
     def __repr__(self):
         return f"({self.x}, {self.y})"
