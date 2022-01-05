@@ -29,14 +29,32 @@
 }
 \newcommand{\img}[2]{\imgcustomsize{#1}{#2}{0.5}}
 
+% dwa obrazki
+\newcommand{\imgsidebyside}[4]{
+	\begin{figure}[H]
+		\centering
+		\begin{minipage}{.5\textwidth}
+			\centering
+			\includegraphics[width=.8\linewidth]{#1}
+			\caption{#2}
+		\end{minipage}%
+		\begin{minipage}{.5\textwidth}
+			\centering
+			\includegraphics[width=.8\linewidth]{#3}
+			\caption{#4}
+		\end{minipage}
+	\end{figure}
+}
+
+
 % tabela z wynikami {nazwa.txt}{opis}
 \newcommand{\tab}[2]{
 \begin{table}[H]
 	\centering
 	\caption{#2}
 	\vspace{0.3cm}
-	\begin{tabular}{l|l|c|c}
-		\lhead{$x$}&\thead{$y$}&\thead{Odc. 1}&\thead{Odc. 2}\\
+	\begin{tabular}{c|c|c|c}
+		\lhead{$x_1$}&\thead{$y_1$}&\thead{$x_2$}&\thead{$y_2$}\\
 		\hline
 		\input{#1}
 	\end{tabular}
@@ -169,10 +187,13 @@
 				Struktura zdarzeń nie jest modyfikowana w trakcie działania algorytmu, stąd jej wkład do złożoności jest ograniczony przez sortowanie i wynosi $ O(n \cdot log(n)) $.
 		
 		\subsection{Struktura stanu}
-			Struktura stanu wykorzystuje posortowaną listę (opartą na drzewie binarnym) \lstinline|SortedList| z biblioteki \lstinline|sortedcontainers|. Gwarantuje ona czas operacji rzędu $ O(log(n)) $.
+			Struktura stanu przechowuje krawędzie. Wykorzystuje posortowaną listę (opartą na drzewie binarnym) \lstinline|SortedList| z biblioteki \lstinline|sortedcontainers|. Gwarantuje ona czas operacji rzędu $ O(log(n)) $.
 			
 			\paragraph{Opis działania}
 				Gdy miotła natrafia na punkt, brane są pod uwagę krawędzie incydentne z nim. Jeżeli krawędź została już zamieciona, jest ona usuwana ze struktury. Gdy nie została jeszcze zamieciona, jest dodawana do niej. Test po której stronie znajduje się krawędź jest przeprowadzany przy użyciu wyznacznika.
+				
+			\paragraph{Porządek elementów}
+				Elementy są utrzymywane w porządku rosnącym względem ich odległości od punktu zaczepienia miotły. Jeżeli oba odcinki zaczynają lub kończą się w tym samym punkcie używamy wyznacznika.
 				
 			\paragraph{Złożoność}
 				Na strukturze stanu wykonamy maksymalnie wykonamy $ n $ operacji wstawiania i usuwania, co daje nam czas działania rzędu $ O(n \cdot log(n)) $.
@@ -197,9 +218,61 @@
 			
 			\img{przyp6.jpg}{Przypadek graniczny}
 				Tutaj odcinek $ AB $ pokrywa się z miotłą. Dopuszczamy widoczność wzdłuż krawędzi. Punkt $ D $ będzie widoczny.
+						
+		\subsection{Testy}
+				Testy odzwierciedlają przedstawione wyżej sytuacje.
 			
-			% TODO Testy & wyniki
-	
+			\img{test1.png}{Przypadek testowy}
+				Wierzchołek widoczny, gdy figura jest wklęsła.
+			
+			% TODO Nie działa
+			%			\img{test2.png}{Przypadek testowy}
+			%				Wierzchołek niewidoczny, gdy figura wypukła
+			
+			\img{test3.png}{Przypadek testowy}
+				Wierzchołek widoczny, gdy współliniowe.
+			
+			\img{test4.png}{Przypadek testowy}
+				Wierzchołek niewidoczny, gdy współliniowe, ale zasłania go inna przeszkoda.
+			
+			\img{test5.png}{Przypadek testowy}
+				Wierzchołek niewidoczny, gdy współliniowe, ale pierwszy niewidoczny.
+			
+			\img{test6.png}{Przypadek testowy}
+				Wierzchołek widoczny, gdy miotła pokrywa się z krawędzią.
+		
+		\subsection{Kroki działania algorytmu}
+			Punkt $ A $ jest punktem zaczepienia miotły.
+		
+			\imgcustomsize{visibility-step000-001.jpg}{Przykład działania}{0.35}
+				Algorytm napotyka pierwsze zdarzenie.  Punkt $ D $ jest widoczny, ponieważ struktura stanu jest pusta. Odcinki incydentne $ DB $ i $ DC $ dodawane są do struktury stanu (w tej kolejności).
+			
+			\imgcustomsize{visibility-step000-002.jpg}{Przykład działania}{0.35}
+				$ DB $ jest usuwane ze struktury, $ BC $ zostaje dodane. Punkt $ B $ jest widoczny, ponieważ nie istnieje krawędź przecinająca miotłę pomiędzy $ A $ i $ B $.
+			
+			\imgcustomsize{visibility-step000-003.jpg}{Przykład działania}{0.35}
+				Dodajemy do struktury $ GF $ i $ GE $. Punkt $ G $ nie jest widoczny, bo zasłania go krawędź $ BC $ (pierwsza przecinająca miotłę).
+			
+			\imgcustomsize{visibility-step000-004.jpg}{Przykład działania}{0.35}
+				Usuwamy $ GE $, dodajemy $ EF $. Analogicznie do $ G $, punkt $ E $ nie jest widoczny.
+			
+			\imgcustomsize{visibility-step000-005.jpg}{Przykład działania}{0.35}
+				Usuwamy $ EF $ i $ GF $. Punkt $ F $ niewidoczny.
+			
+			\imgcustomsize{visibility-step000-006.jpg}{Przykład działania}{0.35}
+				Usuwamy $ BC $ i $ DC $. Punkt $ C $ widoczny.
+			
+			\imgcustomsize{visibility-sum-001.jpg}{Wynik działania}{0.35}
+				Tak wygląda wynik wykonania powyższych kroków. Następnie wybierany jest nowy punkt zaczepienia i algorytm powtarza kroki wykonane powyżej.
+			
+			\imgsidebyside{visibility-sum-002.jpg}{Miotła zaczepiona w $ B $}{visibility-sum-003.jpg}{Miotła zaczepiona w $ C $}
+			\imgsidebyside{visibility-sum-004.jpg}{Miotła zaczepiona w $ D $}{visibility-sum-005.jpg}{Miotła zaczepiona w $ E $}
+			\imgsidebyside{visibility-sum-006.jpg}{Miotła zaczepiona w $ F $}{visibility-sum-007.jpg}{Miotła zaczepiona w $ G $}
+			
+			Tak wygląda ostatecznie graf widoczności dla tego przypadku.
+			\tab{res/results.txt}{Reprezentacja grafu widzialności poprzez pary punktów}
+			
 
-	
+% TODO Testy jakieś
+% TODO bibliografia
 \end{document}

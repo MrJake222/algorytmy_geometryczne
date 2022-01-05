@@ -12,6 +12,7 @@ class Plotter:
         self.xlim = [inf, -inf]
         self.ylim = [inf, -inf]
         self.draw_partial = draw_partial
+        self.annotations = []
 
         self.partial_seqplot = None
         self.partial_plot_index = 0
@@ -19,7 +20,8 @@ class Plotter:
         self.seqplot = SequencePlotter(f"visibility-sum-", "Kroki algorytmu")
 
     def init_limits(self, P):
-        for p in P:
+        for i, p in enumerate(P):
+            self.annotations.append(chr(ord("A")+i))
             self.xlim[0] = min(self.xlim[0], p.x)
             self.xlim[1] = max(self.xlim[1], p.x)
             self.ylim[0] = min(self.ylim[0], p.y)
@@ -44,7 +46,7 @@ class Plotter:
         plt.ylim(*self.ylim)
 
         # przeszkody
-        plt.points_scatter(P)
+        plt.points_scatter(P, annotations=self.annotations)
         plt.lines_draw(L)
 
         # miotła
@@ -59,7 +61,7 @@ class Plotter:
         plt.ylim(*self.ylim)
 
         # przeszkody
-        plt.points_scatter(P, s=16, color="C3", zorder=3)
+        plt.points_scatter(P, s=16, color="C3", zorder=3, annotations=self.annotations)
         plt.lines_draw(L, linewidth=3, color="C3", zorder=2)
 
         # miotła (punkt)
