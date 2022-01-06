@@ -125,6 +125,9 @@ class _Button_callback(object):
         for collection in (self.scenes[self.i].points + self.added_points):
             if len(collection.points) > 0:
                 self.ax.scatter(*zip(*(np.array(collection.points))), **collection.kwargs)
+            for i, p in enumerate(collection.points):
+                l = chr(ord("A")+i)
+                plt.annotate(l, p, xytext=(0, 6),textcoords="offset points")
         for collection in (self.scenes[self.i].lines + self.added_lines + self.added_rects):
             self.ax.add_collection(collection.get_collection())
         self.ax.autoscale(autoscaling)
