@@ -29,7 +29,7 @@ def find_internal_lines(figure):
                 u.internal_line_to_points_set.add(v)
 
 
-def create_visibility_graph(figures, plotter=None):
+def create_visibility_graph(figures, plotter=None, limit=None):
     # utworzenie listy krawędzi, znalezienie krawędzi wewnętrznych figur oraz
     # dodanie do punktów informacji o incydentnych krawędziach i wielokącie do którego należą
     L = []
@@ -51,8 +51,12 @@ def create_visibility_graph(figures, plotter=None):
     # stworzenie grafu widoczności
     vg = VisibilityGraph(P)
 
+    # do rysowania testów
+    points = vg.points
+    if limit != None: points = points[:limit]
+        
     # rozpatrujemy kolejne punkty oznaczane jako p, wokół nich będziemy obracać miotłę
-    for p in vg.points:
+    for p in points:
         # struktura zdarzeń
         Q1 = []
         Q2 = []
