@@ -19,7 +19,7 @@
 
 \definecolor{lbcolor}{rgb}{0.9,0.9,0.9}  
 \graphicspath{ {img} }
-% obrazek {nazwa.png}{opis}
+% obrazek {nazwa.jpg}{opis}
 \newcommand{\imgcustomsize}[3]{
 	\begin{figure}[H]
 		\centering
@@ -425,24 +425,32 @@
 		\tab{res/results.txt}{Reprezentacja grafu widoczności poprzez pary punktów tworzące listę krawędzi}
 		
 		\subsection{Testy}
-					
-			\imgcustomsize{test1.png}{Przypadek testowy}{0.75}
+			\imgcustomsize{test1.jpg}{Przypadek testowy}{0.75}
 				Wierzchołek $ F $ jest widoczny, ponieważ $ B $ jest widoczny i miotły nie przecinają żadne krawędzie na odcinku $ BF $ oraz wektor $ \overrightarrow{FB} $ nie jest skierowany do wnętrza figury.
 			
-			\imgcustomsize{test2.png}{Przypadek testowy}{0.75}
+			\imgcustomsize{test2.jpg}{Przypadek testowy}{0.75}
 				Tutaj wektor $ FB $ jest skierowany do wnętrza figury więc punkt $ F $ jest niewidoczny (przerywana linia ma za zadanie tylko podkreślić fakt, że punkty $ B $ i $ F $ są współliniowe).
 			
-			\imgcustomsize{test3.png}{Przypadek testowy}{0.75}
+			\imgcustomsize{test3.jpg}{Przypadek testowy}{0.75}
 				Punkt $ E $ jest widoczny, ponieważ $ B $ jest widoczny i należą do różnych figur oraz pomiędzy nimi nie ma żadnej krawędzi przecinającej odcinek $ BE $.
 			
-			\imgcustomsize{test4.png}{Przypadek testowy}{0.75}
+			\imgcustomsize{test4.jpg}{Przypadek testowy}{0.75}
 				Tutaj analogicznie jak wyżej, ale $ BH $ jest przecięty dwoma odcinkami wiec $ H $ nie będzie widoczny.
 			
-			\imgcustomsize{test5.png}{Przypadek testowy}{0.75}
+			\imgcustomsize{test5.jpg}{Przypadek testowy}{0.75}
 				Jeżeli $ E $ jest niewidoczny to nie ma sensu badać widoczności $ H $, ponieważ jest on dalej od punktu zaczepienia miotły (punktu $ A $).
 			
-			\imgcustomsize{test6.png}{Przypadek testowy}{0.75}
+			\imgcustomsize{test6.jpg}{Przypadek testowy}{0.75}
 				Wierzchołek $ E $ widoczny, gdy miotła pokrywa się z krawędzią $ BC $.
+				
+			\imgcustomsize{test7.jpg}{Przypadek testowy}{1}
+			\imgcustomsize{test8.jpg}{Przypadek testowy}{1}
+			\imgcustomsize{test9.jpg}{Przypadek testowy}{1}
+			\imgcustomsize{test10.jpg}{Przypadek testowy}{1}
+		
+		\subsection{Testy znajdowania najkrótszej ścieżki}
+			\imgcustomsize{p1.jpg}{Przypadek testowy}{0.75}
+			\imgcustomsize{p2.jpg}{Przypadek testowy}{0.75}
 		
 	\section{Bibliografia}
 		Algorytm został przygotowany na podstawie książki Marka de Berga pt. \textit{Geometria Obliczeniowa - Algorytmy i Zastosowania}.

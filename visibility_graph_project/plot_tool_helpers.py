@@ -5,8 +5,8 @@ from Point import Point
 from Figure import Figure
 
 
-def visibility_graph_scenes(figures):
-    vg = create_visibility_graph(figures)
+def visibility_graph_scenes(figures, limit=None):
+    vg = create_visibility_graph(figures, limit=limit)
 
     figures_lines_collections = [LinesCollection([[(figure.points[i - 1].x, figure.points[i - 1].y), (figure.points[i].x, figure.points[i].y)]
                                                   for i in range(len(figure.points))], color="tab:red", linestyle="dotted", zorder=2, linewidth=2.5) for figure in figures]
