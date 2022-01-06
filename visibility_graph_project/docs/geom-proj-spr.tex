@@ -379,56 +379,69 @@
 			%\img{przyp6.jpg}{Przypadek graniczny}
 			%	Tutaj odcinek $ AB $ pokrywa się z miotłą. Dopuszczamy widoczność wzdłuż krawędzi. Punkt $ D $ będzie widoczny.
 		
-				\subsection{Kroki działania algorytmu}
-		Punkt $ A $ jest punktem zaczepienia miotły.
+		\subsection{Kroki działania algorytmu} \label{sssec:steps}
+			Punkt $ A $ jest punktem zaczepienia miotły. Miotła jest reprezentowana jako czerwony odcinek z $ A $ do obecnie przetwarzanego punktu.
+			
+			\imgcustomsize{visibility-step000-001.jpg}{Przykład działania}{0.35}
+			Algorytm napotyka pierwsze zdarzenie.  Punkt $ D $ jest widoczny, ponieważ struktura stanu jest pusta. Odcinki incydentne $ DB $ i $ DC $ dodawane są do struktury stanu (w tej kolejności).
+			
+			\imgcustomsize{visibility-step000-002.jpg}{Przykład działania}{0.35}
+			$ DB $ jest usuwane ze struktury, $ BC $ zostaje dodane. Punkt $ B $ jest widoczny, ponieważ nie istnieje krawędź przecinająca miotłę pomiędzy $ A $ i $ B $.
+			
+			\imgcustomsize{visibility-step000-003.jpg}{Przykład działania}{0.35}
+			Dodajemy do struktury $ GF $ i $ GE $. Punkt $ G $ nie jest widoczny, bo zasłania go krawędź $ BC $ (pierwsza przecinająca miotłę).
+			
+			\imgcustomsize{visibility-step000-004.jpg}{Przykład działania}{0.35}
+			Usuwamy $ GE $, dodajemy $ EF $. Analogicznie do $ G $, punkt $ E $ nie jest widoczny.
+			
+			\imgcustomsize{visibility-step000-005.jpg}{Przykład działania}{0.35}
+			Usuwamy $ EF $ i $ GF $. Punkt $ F $ niewidoczny.
+			
+			\imgcustomsize{visibility-step000-006.jpg}{Przykład działania}{0.35}
+			Usuwamy $ BC $ i $ DC $. Punkt $ C $ widoczny.
+			
+			\imgcustomsize{visibility-sum-001.jpg}{Wynik działania}{0.35}
+			Tak wygląda wynik wykonania powyższych kroków. Następnie wybierany jest nowy punkt zaczepienia i algorytm powtarza kroki wykonane powyżej.
+			
+			\vspace{\baselineskip} % newline
+			Kolorem czerwonym oznaczone są figury (przeszkody), krawędzie dodane do grafu widoczności zaznaczone zostały przerywanymi liniami. 
+			
+			\imgsidebyside{visibility-sum-002.jpg}{Miotła zaczepiona w $ B $}{visibility-sum-003.jpg}{Miotła zaczepiona w $ C $}
+			\imgsidebyside{visibility-sum-004.jpg}{Miotła zaczepiona w $ D $}{visibility-sum-005.jpg}{Miotła zaczepiona w $ E $}
+			\imgsidebyside{visibility-sum-006.jpg}{Miotła zaczepiona w $ F $}{visibility-sum-007.jpg}{Miotła zaczepiona w $ G $}
+			
+			Tak wygląda ostatecznie graf widoczności dla tego przypadku.
 		
-		\imgcustomsize{visibility-step000-001.jpg}{Przykład działania}{0.35}
-		Algorytm napotyka pierwsze zdarzenie.  Punkt $ D $ jest widoczny, ponieważ struktura stanu jest pusta. Odcinki incydentne $ DB $ i $ DC $ dodawane są do struktury stanu (w tej kolejności).
+		\subsection{Reprezentacja grafu}
+
+		Graf jest zwracany przez funkcję $ create\_visibility\_graph $ jako obiekt klasy $ VisibilityGraph $. Wewnątrz klasy graf jest reprezentowany jako słownik słowników. Dla każdego wierzchołka (reprezentowanego jako obiekt klasy $ Point $) przechowywany jest słownik jego sąsiadów (widocznych punktów), gdzie kluczem jest sąsiadujący wierzchołek (również reprezentowany jako obiekt klasy $ Point $), a wartością jest odległość tych dwóch punktów na płaszczyźnie. Graf w takiej postaci zwracany jest przez metodę $ get\_graph $.
 		
-		\imgcustomsize{visibility-step000-002.jpg}{Przykład działania}{0.35}
-		$ DB $ jest usuwane ze struktury, $ BC $ zostaje dodane. Punkt $ B $ jest widoczny, ponieważ nie istnieje krawędź przecinająca miotłę pomiędzy $ A $ i $ B $.
+		\vspace{\baselineskip} % newline
+		Klasa posiada również metodę $ get\_lines $, która zwraca listę krawędzi grafu w postaci par punktów [$ pierwszy $ $ punkt $, $ drugi $ $ punkt $]. Punkty te są w tej liście reprezentowane jako dwuelementowe krotki postaci (współrzędna $ x $ punktu, współrzędna $ y $ punktu).
 		
-		\imgcustomsize{visibility-step000-003.jpg}{Przykład działania}{0.35}
-		Dodajemy do struktury $ GF $ i $ GE $. Punkt $ G $ nie jest widoczny, bo zasłania go krawędź $ BC $ (pierwsza przecinająca miotłę).
+		\vspace{\baselineskip} % newline
+		Poniżej w Tablicy 1 przedstawiony został graf widoczności dla przypadku opisywanego w punkcie \ref{sssec:steps}, w postaci listy krawędzi.
 		
-		\imgcustomsize{visibility-step000-004.jpg}{Przykład działania}{0.35}
-		Usuwamy $ GE $, dodajemy $ EF $. Analogicznie do $ G $, punkt $ E $ nie jest widoczny.
-		
-		\imgcustomsize{visibility-step000-005.jpg}{Przykład działania}{0.35}
-		Usuwamy $ EF $ i $ GF $. Punkt $ F $ niewidoczny.
-		
-		\imgcustomsize{visibility-step000-006.jpg}{Przykład działania}{0.35}
-		Usuwamy $ BC $ i $ DC $. Punkt $ C $ widoczny.
-		
-		\imgcustomsize{visibility-sum-001.jpg}{Wynik działania}{0.35}
-		Tak wygląda wynik wykonania powyższych kroków. Następnie wybierany jest nowy punkt zaczepienia i algorytm powtarza kroki wykonane powyżej.
-		
-		\imgsidebyside{visibility-sum-002.jpg}{Miotła zaczepiona w $ B $}{visibility-sum-003.jpg}{Miotła zaczepiona w $ C $}
-		\imgsidebyside{visibility-sum-004.jpg}{Miotła zaczepiona w $ D $}{visibility-sum-005.jpg}{Miotła zaczepiona w $ E $}
-		\imgsidebyside{visibility-sum-006.jpg}{Miotła zaczepiona w $ F $}{visibility-sum-007.jpg}{Miotła zaczepiona w $ G $}
-		
-		Tak wygląda ostatecznie graf widoczności dla tego przypadku.
-		\tab{res/results.txt}{Reprezentacja grafu widzialności poprzez pary punktów}
-		
+		\tab{res/results.txt}{Reprezentacja grafu widoczności poprzez pary punktów tworzące listę krawędzi}
 		
 		\subsection{Testy}
 					
-			\imgcustomsize{test1.png}{Przypadek testowy}{0.6}
+			\imgcustomsize{test1.png}{Przypadek testowy}{0.75}
 				Wierzchołek $ F $ jest widoczny, ponieważ $ B $ jest widoczny i miotły nie przecinają żadne krawędzie na odcinku $ BF $ oraz wektor $ \overrightarrow{FB} $ nie jest skierowany do wnętrza figury.
 			
-			\imgcustomsize{test2.png}{Przypadek testowy}{0.6}
+			\imgcustomsize{test2.png}{Przypadek testowy}{0.75}
 				Tutaj wektor $ FB $ jest skierowany do wnętrza figury więc punkt $ F $ jest niewidoczny (przerywana linia ma za zadanie tylko podkreślić fakt, że punkty $ B $ i $ F $ są współliniowe).
 			
-			\imgcustomsize{test3.png}{Przypadek testowy}{0.6}
+			\imgcustomsize{test3.png}{Przypadek testowy}{0.75}
 				Punkt $ E $ jest widoczny, ponieważ $ B $ jest widoczny i należą do różnych figur oraz pomiędzy nimi nie ma żadnej krawędzi przecinającej odcinek $ BE $.
 			
-			\imgcustomsize{test4.png}{Przypadek testowy}{0.6}
+			\imgcustomsize{test4.png}{Przypadek testowy}{0.75}
 				Tutaj analogicznie jak wyżej, ale $ BH $ jest przecięty dwoma odcinkami wiec $ H $ nie będzie widoczny.
 			
-			\imgcustomsize{test5.png}{Przypadek testowy}{0.6}
+			\imgcustomsize{test5.png}{Przypadek testowy}{0.75}
 				Jeżeli $ E $ jest niewidoczny to nie ma sensu badać widoczności $ H $, ponieważ jest on dalej od punktu zaczepienia miotły (punktu $ A $).
 			
-			\imgcustomsize{test6.png}{Przypadek testowy}{0.6}
+			\imgcustomsize{test6.png}{Przypadek testowy}{0.75}
 				Wierzchołek $ E $ widoczny, gdy miotła pokrywa się z krawędzią $ BC $.
 		
 	\section{Bibliografia}
