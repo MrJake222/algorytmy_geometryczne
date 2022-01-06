@@ -189,7 +189,7 @@
 	
 	% TODO opisujemy to?
 	\paragraph{\lstinline|plot_tool.py|}
-		Dostarczone narzędzie graficzne.
+		Dostarczone narzędzie graficzne. Została dopisana funkcjonalność opisywania wierzchołków kolejnymi literami.
 	
 	\paragraph{\lstinline|plot_tool_helpers.py|}
 		\begin{itemize}
@@ -415,32 +415,27 @@
 		
 		
 		\subsection{Testy}
-				Testy odzwierciedlają przedstawione wyżej sytuacje.
+					
+			\imgcustomsize{test1.png}{Przypadek testowy}{0.6}
+				Wierzchołek $ F $ jest widoczny, ponieważ $ B $ jest widoczny i miotły nie przecinają żadne krawędzie na odcinku $ BF $ oraz wektor $ \overrightarrow{FB} $ nie jest skierowany do wnętrza figury.
 			
-			\imgcustomsize{download.png}{Test obrazka}{0.8}
+			\imgcustomsize{test2.png}{Przypadek testowy}{0.6}
+				Tutaj wektor $ FB $ jest skierowany do wnętrza figury więc punkt $ F $ jest niewidoczny (przerywana linia ma za zadanie tylko podkreślić fakt, że punkty $ B $ i $ F $ są współliniowe).
 			
+			\imgcustomsize{test3.png}{Przypadek testowy}{0.6}
+				Punkt $ E $ jest widoczny, ponieważ $ B $ jest widoczny i należą do różnych figur oraz pomiędzy nimi nie ma żadnej krawędzi przecinającej odcinek $ BE $.
 			
-			\img{test1.png}{Przypadek testowy}
-				Wierzchołek widoczny, gdy figura jest wklęsła.
+			\imgcustomsize{test4.png}{Przypadek testowy}{0.6}
+				Tutaj analogicznie jak wyżej, ale $ BH $ jest przecięty dwoma odcinkami wiec $ H $ nie będzie widoczny.
 			
-			% TODO Nie działa
-			%			\img{test2.png}{Przypadek testowy}
-			%				Wierzchołek niewidoczny, gdy figura wypukła
+			\imgcustomsize{test5.png}{Przypadek testowy}{0.6}
+				Jeżeli $ E $ jest niewidoczny to nie ma sensu badać widoczności $ H $, ponieważ jest on dalej od punktu zaczepienia miotły (punktu $ A $).
 			
-			\img{test3.png}{Przypadek testowy}
-				Wierzchołek widoczny, gdy współliniowe.
-			
-			\img{test4.png}{Przypadek testowy}
-				Wierzchołek niewidoczny, gdy współliniowe, ale zasłania go inna przeszkoda.
-			
-			\img{test5.png}{Przypadek testowy}
-				Wierzchołek niewidoczny, gdy współliniowe, ale pierwszy niewidoczny.
-			
-			\img{test6.png}{Przypadek testowy}
-				Wierzchołek widoczny, gdy miotła pokrywa się z krawędzią.
+			\imgcustomsize{test6.png}{Przypadek testowy}{0.6}
+				Wierzchołek $ E $ widoczny, gdy miotła pokrywa się z krawędzią $ BC $.
 		
-
-			
+	\section{Bibliografia}
+		Algorytm został przygotowany na podstawie książki Marka de Berga pt. \textit{Geometria Obliczeniowa - Algorytmy i Zastosowania}
 
 % TODO Testy jakieś
 % TODO bibliografia
