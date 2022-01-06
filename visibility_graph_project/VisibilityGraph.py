@@ -29,5 +29,8 @@ class VisibilityGraph:
 
         return all_lines
 
+    def get_graph(self):
+        return self.graph
+
     def __repr__(self):
         return f"<Graph: {self.graph}>"

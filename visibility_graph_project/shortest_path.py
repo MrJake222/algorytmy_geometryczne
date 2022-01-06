@@ -42,5 +42,5 @@ def shortest_path(figures, s, t):
 
     vb = create_visibility_graph(figures)
 
-    return dijkstra(vb.graph, s, t)
+    return dijkstra(vb.get_graph(), s, t)
 
