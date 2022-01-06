@@ -10,6 +10,7 @@
 \usepackage{indentfirst} % wcięcie w pierwszej linii paragrafu
 \usepackage{graphicx} % obrazy
 \usepackage{float} % dla image [H]
+\usepackage{fancyhdr} % nagłówki stron
 
 % bez odstępu w itemize
 \let\tempone\itemize
@@ -54,7 +55,7 @@
 	\caption{#2}
 	\vspace{0.3cm}
 	\begin{tabular}{c|c|c|c}
-		\lhead{$x_1$}&\thead{$y_1$}&\thead{$x_2$}&\thead{$y_2$}\\
+		\lefthead{$x_1$}&\thead{$y_1$}&\thead{$x_2$}&\thead{$y_2$}\\
 		\hline
 		\input{#1}
 	\end{tabular}
@@ -63,18 +64,26 @@
 
 % nagłowek tabeli
 \newcommand*{\thead}[1]{\multicolumn{1}{|c}{\bfseries #1}}
-\newcommand*{\lhead}[1]{\multicolumn{1}{c}{\bfseries #1}}
+\newcommand*{\lefthead}[1]{\multicolumn{1}{c}{\bfseries #1}}
+
+% nagłówki stron
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Obliczanie grafu widoczności}
+\lhead{Algorytmy geometryczne}
+\rfoot{\thepage}
 
 \begin{document}
 	\lstset{backgroundcolor=\color{lbcolor}, language=Python, inputencoding=utf8}
 	
-	\title{Graf widzialności \\
-		\vspace{0.2cm}
+	\title{\includegraphics{agh.jpg} \\ Obliczanie grafu widoczności \\
+		\vspace{0.4cm}
 		\large Algorytmy geometryczne \\
 		\large Projekt}
 	\author{Norbert Morawski\\Dariusz Piwowarski}
 	
 	\maketitle
+	\pagebreak
 	\tableofcontents
 	\pagebreak
 	
@@ -99,107 +108,108 @@
 		% TODO może coś więcej tutaj
 		Program został napisany w języku Python. Interfejs dla użytkownika dostępny jest w pliku \lstinline|.ipynb|, wykorzystuje on narzędzie Jupyter Notebook.
 	
+	
 	\subsection{Moduły}
 		Poniżej znajduje się opis modułów i metod w nich występujących.
 	
 		\paragraph{\lstinline|create_visibility_graph.py|}
-			Zawiera implementację algorytmu obliczania grafu widzialności.
-			\begin{itemize}
-				\item \lstinline|find_internal_lines| -- Implementuje algorytm znajdywania przekątnych w figurach. Złożoność $ O(n^2) $,
-				\item \lstinline|create_visibility_graph| -- Tworzy graf  widzialności.
-			\end{itemize}
-		
-		\paragraph{\lstinline|VisibilityGraph.py|}
-			Klasa zawierająca reprezentację finalnego grafu widzialności.
-			\begin{itemize}
-				\item \lstinline|__init__| -- Konstruktor,
-				\item \lstinline|add_edge| -- Dodaje krawędź do grafu,
-				\item \lstinline|get_points| -- Zwraca listę krotek reprezentujących zbiór wierzchołków grafu,
-				\item \lstinline|get_lines| -- Zwraca listę krawędzi,
-				\item \lstinline|get_lines_separately| -- Zwraca listę list krawędzi z podziałem na wierzchołki początkowe krawędzi,
-				\item \lstinline|__repr__| -- Zwraca reprezentację tekstową klasy.
-			\end{itemize}
-		
-		\paragraph{\lstinline|Sweeper.py|}
-			Klasa zawierająca aktualny stan miotły (punkt początkowy i punkt końcowy)
-		
-		\paragraph{\lstinline|shortest_path.py|}
-			Implementacja algorytmu Dijkstry, który wyznacza najkrótszą ścieżkę pomiędzy przeszkodami.
-			\begin{itemize}
-				\item \lstinline|dijkstra| -- Implementuje algorytm Dijkstry. Złożoność $ O(n \cdot log(n)) $,
-				\item \lstinline|shortest_path| -- Funkcja pomocnicza do wywołania algorytmu Dijkstry.  Dodaje do grafu punkt początkowy i końcowy.
-			\end{itemize}
-		
-		\paragraph{\lstinline|Point.py|}
-			Klasa zawierająca reprezentację punktu na płaszczyźnie.
-			\begin{itemize}
-				\item \lstinline|__init__| -- Konstruktor,
-				\item \lstinline|with_line| -- Dodaje krawędź incydentną z tym wierzchołkiem,
-				\item \lstinline|has_line_to| -- Sprawdza czy wierzchołek jest incydentny z podaną krawędzią,
-				\item \lstinline|has_internal_line_to| -- Sprawdza czy krawędż pomiędzy tym a podanym wierzchołkiem to przekątna, 
-				\item \lstinline|__repr__| -- Zwraca reprezentację tekstową klasy.
-			\end{itemize}
-			
-		\paragraph{\lstinline|Line.py|}
-			Klasa zawierająca reprezentację odcinka na płaszczyźnie. Wewnętrznie przechowuje jego początek i koniec.
-			\begin{itemize}
-				\item \lstinline|__init__| -- Konstruktor,
-				\item \lstinline|__repr__| -- Zwraca reprezentację tekstową klasy,
-				\item \lstinline|__eq__| -- Sprawdza czy linie są sobie równe (porównuje czy mają takie same końce i początki),
-				\item \lstinline|__gt__| -- Sprawdza czy linia następuje po podanej linii w strukturze stanu.
-			\end{itemize}
-					
-		\paragraph{\lstinline|Figure.py|}
-			Klasa zawierająca reprezentację figury na płaszczyźnie. Wewnętrznie przechowuje listę punktów należących do figury, w kolejności przeciwnej do ruchu wskazówek zegara.
-			\begin{itemize}
-				\item \lstinline|__init__| -- Konstruktor,
-				\item \lstinline|__repr__| -- Zwraca reprezentację tekstową klasy.
-			\end{itemize}
-		
-		\paragraph{\lstinline|plotter/Plotter.py|}
-			Klasa obsługująca generowane wykresów krok-po-kroku.
-			\begin{itemize}
-				\item \lstinline|__init__| -- Konstruktor,
-				\item \lstinline|init_limits| -- Pobiera maksymalne i minimalne współrzędne punktów w grafie,
-				\item \lstinline|new_partial_plot| -- Tworzy nowy częściowy wykres,
-				\item \lstinline|partial_plot| -- Rysuje nowy częściowy wykres,
-				\item \lstinline|sum_up| -- Rysuje podsumowanie jednej iteracji zewnętrznej pętli algorytmu.
-			\end{itemize}
-			
-		\paragraph{\lstinline|plotter/SequencePlotter.py|}
-			Klasa pomocnicza obsługująca generowanie osobnych wykresów w osobnych plikach, za każdym razem inkrementując numer wykresu.
-			\begin{itemize}
-				\item \lstinline|__init__| -- Konstruktor,
-				\item \lstinline|next| -- Tworzy nowy wykres.
-			\end{itemize}
-
-		% TODO opisujemy to?
-		\paragraph{\lstinline|plotter/Plot.py|}
-			Klasa pomocnicza zawierająca podstawowe funkcje obsługi wykresów.
-
-		% TODO opisujemy to?
-		\paragraph{\lstinline|plot_tool.py|}
-			Dostarczone narzędzie graficzne.
-			
-		\paragraph{\lstinline|plot_tool_helpers.py|}
-			\begin{itemize}
-				% TODO nie wiem
-				\item \lstinline|visibility_graph_scenes| -- 
-				\item \lstinline|visibility_graph_scenes_separately| -- 
-				\item \lstinline|shortest_path_scene| -- 
-				\item \lstinline|get_figures_from_plot| -- 
-				\item \lstinline|get_points_from_plot| -- 
-			\end{itemize}
-			
-		\paragraph{\lstinline|helpers.py|}
-			Zawiera pomocnicze funkcje.
-			\begin{itemize}
-				\item \lstinline|dist_p_to_intersection| -- oblicza odległość do przecięcia
-				\item \lstinline|intersection| -- zwraca przecięcie dwóch linii
-				\item \lstinline|orient| -- oblicza wyznacznik i zwraca jak ułożone są punkty 
-				\item \lstinline|dist| -- oblicza odległość dwóch punktów
-			\end{itemize}
+		Zawiera implementację algorytmu obliczania grafu widzialności.
+		\begin{itemize}
+			\item \lstinline|find_internal_lines| -- Implementuje algorytm, który znajduje dla każdego punktu figury, inne wierzchołki tego samego wielokąta, takie że linia je łącząca jest skierowana do wnętrza figury. Złożoność $ O(n^2) $,
+			\item \lstinline|create_visibility_graph| -- Tworzy graf  widzialności.
+		\end{itemize}
 	
+	\paragraph{\lstinline|VisibilityGraph.py|}
+		Klasa zawierająca reprezentację finalnego grafu widzialności.
+		\begin{itemize}
+			\item \lstinline|__init__| -- Konstruktor,
+			\item \lstinline|add_edge| -- Dodaje krawędź do grafu,
+			\item \lstinline|get_points| -- Zwraca listę krotek reprezentujących zbiór wierzchołków grafu,
+			\item \lstinline|get_lines| -- Zwraca listę krawędzi,
+			\item \lstinline|get_lines_separately| -- Zwraca listę list krawędzi z podziałem na wierzchołki początkowe krawędzi,
+			\item \lstinline|__repr__| -- Zwraca reprezentację tekstową klasy.
+		\end{itemize}
+	
+	\paragraph{\lstinline|Sweeper.py|}
+		Klasa zawierająca aktualny stan miotły (punkt początkowy i końcowy)
+	
+	\paragraph{\lstinline|shortest_path.py|}
+		Implementacja algorytmu Dijkstry, który wyznacza najkrótszą ścieżkę pomiędzy przeszkodami.
+		\begin{itemize}
+			\item \lstinline|dijkstra| -- Implementuje algorytm Dijkstry. Złożoność $ O(n \cdot log(n)) $,
+			\item \lstinline|shortest_path| -- Funkcja wyznaczająca najkrótszą ścieżkę pomiędzy dwoma zadanymi punktami, na płaszczyźnie zawierającej przeszkody w postaci wielokątów.
+		\end{itemize}
+	
+	\paragraph{\lstinline|Point.py|}
+		Klasa zawierająca reprezentację punktu na płaszczyźnie.
+		\begin{itemize}
+			\item \lstinline|__init__| -- Konstruktor,
+			\item \lstinline|with_line| -- Dodaje krawędź incydentną z tym wierzchołkiem,
+			\item \lstinline|has_line_to| -- Sprawdza czy wierzchołek jest incydentny z podaną krawędzią,
+			\item \lstinline|has_internal_line_to| -- Sprawdza czy krawędź pomiędzy tym a podanym wierzchołkiem jest skierowana do wnętrza figury, 
+			\item \lstinline|__repr__| -- Zwraca reprezentację tekstową klasy.
+		\end{itemize}
+	
+	\paragraph{\lstinline|Line.py|}
+		Klasa zawierająca reprezentację odcinka na płaszczyźnie. Wewnętrznie przechowuje jego początek i koniec.
+		\begin{itemize}
+			\item \lstinline|__init__| -- Konstruktor,
+			\item \lstinline|__repr__| -- Zwraca reprezentację tekstową klasy,
+			\item \lstinline|__eq__| -- Sprawdza czy linie są sobie równe (porównuje czy mają takie same końce i początki),
+			\item \lstinline|__gt__| -- Sprawdza czy linia następuje po podanej linii w strukturze stanu.
+		\end{itemize}
+	
+	\paragraph{\lstinline|Figure.py|}
+		Klasa zawierająca reprezentację figury na płaszczyźnie. Wewnętrznie przechowuje listę punktów należących do figury, w kolejności przeciwnej do ruchu wskazówek zegara.
+		\begin{itemize}
+			\item \lstinline|__init__| -- Konstruktor,
+			\item \lstinline|__repr__| -- Zwraca reprezentację tekstową klasy.
+		\end{itemize}
+	
+	\paragraph{\lstinline|plotter/Plotter.py|}
+		Klasa obsługująca generowanie wykresów krok-po-kroku.
+		\begin{itemize}
+			\item \lstinline|__init__| -- Konstruktor,
+			\item \lstinline|init_limits| -- Pobiera maksymalne i minimalne współrzędne punktów w grafie,
+			\item \lstinline|new_partial_plot| -- Tworzy nowy częściowy wykres,
+			\item \lstinline|partial_plot| -- Rysuje nowy częściowy wykres,
+			\item \lstinline|sum_up| -- Rysuje podsumowanie jednej iteracji zewnętrznej pętli algorytmu.
+		\end{itemize}
+	
+	\paragraph{\lstinline|plotter/SequencePlotter.py|}
+		Klasa pomocnicza obsługująca generowanie osobnych wykresów w osobnych plikach, za każdym razem inkrementując numer wykresu.
+		\begin{itemize}
+			\item \lstinline|__init__| -- Konstruktor,
+			\item \lstinline|next| -- Tworzy nowy wykres.
+		\end{itemize}
+	
+	% TODO opisujemy to?
+	\paragraph{\lstinline|plotter/Plot.py|}
+		Klasa pomocnicza zawierająca podstawowe funkcje obsługi wykresów.
+	
+	% TODO opisujemy to?
+	\paragraph{\lstinline|plot_tool.py|}
+		Dostarczone narzędzie graficzne.
+	
+	\paragraph{\lstinline|plot_tool_helpers.py|}
+		\begin{itemize}
+			% TODO nie wiem
+			\item \lstinline|visibility_graph_scenes| -- 
+			\item \lstinline|visibility_graph_scenes_separately| -- 
+			\item \lstinline|shortest_path_scene| -- 
+			\item \lstinline|get_figures_from_plot| -- 
+			\item \lstinline|get_points_from_plot| -- 
+		\end{itemize}
+	
+	\paragraph{\lstinline|helpers.py|}
+		Zawiera funkcje pomocnicze do obliczania grafu widoczności.
+		\begin{itemize}
+			\item \lstinline|dist_p_to_intersection(p, w, line)| -- Oblicza dla zadanych punktów $ p $, $ w $ i pewnego odcinka, odległość punktu $ p $ od przecięcia $ pw $ z tym odcinkiem. Jeśli są równoległe zwracany jest środek zadanego odcinka,\\
+			\item \lstinline|intersection(line1, line2)| -- Zwraca $ True $/$ False $ w zależności, czy zadane odcinki się przecinają,\\
+			\item \lstinline|orient(a, b, c)| -- Określa w jaki sposób zorientowane są trzy zadane punkty. Zwraca wartość $ 1 $, gdy są zorientowane przeciwnie do ruchu wskazówek zegara; $ 0 $, gdy są współliniowe; $ -1 $ gdy ich orientacja jest zgodna z ruchem wskazówek zegara,\\
+			\item \lstinline|dist(a, b)| -- Oblicza odległość pomiędzy dwoma punktami na płaszczyźnie.
+		\end{itemize}
+
 	\section{Informacje użytkownika}
 	
 	\subsection{Uruchomienie programu}
@@ -213,30 +223,36 @@
 	
 	\subsection{Opis problemu}
 		\paragraph{Graf widzialności}
-			Jest to graf gdzie zbiorem wierzchołków jest zbiór wierzchołków na płaszczyźnie, a krawędzie istnieją tylko kiedy wierzchołki na płaszczyźnie "widzą się", tzn. nie istnieje pomiędzy nimi przeszkoda w postaci figury.
+			Jest to graf gdzie zbiorem wierzchołków jest zbiór punktów na płaszczyźnie, a krawędzie istnieją tylko kiedy wierzchołki "widzą się", tzn. nie istnieje pomiędzy nimi przeszkoda w postaci figury.
 		
 		\paragraph{Wstęp}
 			Trywialny algorytm wymagałby sprawdzenia każdej pary wierzchołków w czasie $ O(n^2) $. Każde takie sprawdzenie wymagałoby przejrzenia wszystkich innych wierzchołków w czasie $ O(n) $, co prowadziłoby do algorytmu o złożoności $ O(n^3) $. Jednak jeżeli wykorzystamy zrównoważone drzewo binarne do wyszukiwania przeszkód, jesteśmy w stanie obniżyć złożoność do poziomu $ O(n^2 \cdot log(n)) $.
 		
 		\paragraph{Algorytm}
-			Problem sprowadza się do wyznaczenia widzianych wierzchołków dla każdego z $ n $ punktów. Do tego celu wykorzystamy algorytm zamiatania. Tym razem jednak nie zamiatamy płaszczyzny wzdłuż żadnej z osi, lecz zamiatamy płaszczyznę obracając miotłę.
+			Problem sprowadza się do wyznaczenia widzianych wierzchołków dla każdego z $ n $ punktów. Do tego celu wykorzystamy algorytm zamiatania. Płaszczyzna jest zamiatana poprzez obrót miotły zaczepionej w rozważanym punkcie, zgodny z ruchem wskazówek zegara.
 			
 		\paragraph{Zdarzenia i stan miotły}
-		Zdarzeniami będą punkty na płaszczyźnie, a struktura stanu będzie przechowywać aktualnie przecinane odcinki w kolejność od najbliższej punktu zaczepienia do najdalszej.
+		Zdarzeniami będą punkty na płaszczyźnie, a struktura stanu będzie przechowywać aktualnie przecinane odcinki w kolejność od najbliższego punktowi zaczepienia do najdalszego.
 	
-	\subsection{Algorytm}
-		Zamiatanie płaszczyzny będzie odbywać się wg następujących kroków:
-		\begin{itemize}
-			\item Zaczep miotłę w badanym punkcie i zwróć ją w kierunku dodatnie półosi OX,
-			\item Obracaj miotłą zgodnie ze wskazówkami zegara,
-			\item Rozpatruj zdarzenia i aktualizuj strukturę stanu, dodając do grafu widzialności odpowiednie krawędzie.
-		\end{itemize}
+	\subsection{Algorytm wyznaczania widocznych wierzchołków dla punktu $ p $} \label{sssec:algo}
+		Algorytm polega na zamiataniu płaszczyzny i odbywa się wg następujących kroków:
+		\begin{enumerate}
+			\item Posortuj wierzchołki na podstawie kąta (zgodnego z ruchem wskazówek zegara) jaki półprosta z p do danego wierzchołka tworzy z dodatnią półosią OX. Gdy kąt jest taki sam, wierzchołek bliższy p powinien znajdować się przed wierzchołkiem dalszym. Wierzchołki w tej kolejności umieść w strukturze zdarzeń.
+			\item Zaczep miotłę w badanym punkcie i zwróć ją w kierunku dodatniej półosi OX.
+			\item Dodaj do struktury stanu krawędzie przecinające miotłę w położeniu początkowym.
+			\item Dla kolejnych punktów $ w $ z struktury zdarzeń:
+			\begin{itemize}
+				\item Ustaw miotłę jako półprostą z $ p $ do $ w $.
+				\item Sprawdź czy punkt $ w $ jest widoczny, jeśli tak dodaj odpowiednią krawędź do grafu widoczności.
+				\item Zaktualizuj strukturę stanu dodając do niej odcinki incydentne leżące po stronie zgodnej z ruchem wskazówek zegara względem miotły i usuwając te leżące po stronie przeciwnej do ruchu wskazówek zegara.
+			\end{itemize}
+		\end{enumerate}
 	
 		\subsection{Struktura zdarzeń}
 			Struktura zdarzeń została zaimplementowana przy użyciu listy. 
 			
 			\paragraph{Opis sortowania}
-				Zbiór punktów najpierw dzielony jest na dwa podzbiory względem tego czy dany punkt jest na lewo czy na prawo od aktualnie rozpatrywanego punktu (w przypadku gdy leżą one w tym samym miejscu podział następuje po wartości współrzędnej $ x $). Następnie każda część jest sortowana osobno wbudowaną funkcją $ sort $ (sortowanie stabilne) dwukrotnie. W pierwszym sortowaniu kluczem jest odległość od punktu zaczepienia, w drugim stosowany jest wyznacznik aby posortować punkty zgodnie z ruchem wskazówek zegara.
+				Zbiór punktów najpierw dzielony jest na dwa podzbiory względem tego czy dany punkt leży poniżej czy powyżej aktualnie rozpatrywanego punktu $ p $ (w przypadku gdy leżą one na tej samej wysokości co punkt $ p $ podział następuje po wartości współrzędnej $ x $). Następnie każda część jest sortowana osobno wbudowaną funkcją $ sort $ (sortowanie stabilne) dwukrotnie. W pierwszym sortowaniu kluczem jest odległość od punktu zaczepienia, w drugim stosowany jest wyznacznik aby posortować punkty zgodnie z ruchem wskazówek zegara.
 			
 			\vspace{\baselineskip} % newline
 			Ostatecznie otrzymujemy posortowaną strukturę zdarzeń gdzie punkty występują w kolejności zgodnie z ruchem wskazówek zegara, a punkty współliniowe ułożone są od najbliższych do najdalszych.
@@ -256,29 +272,153 @@
 			\paragraph{Złożoność}
 				Na strukturze stanu wykonamy maksymalnie wykonamy $ n $ operacji wstawiania i usuwania, co daje nam czas działania rzędu $ O(n \cdot log(n)) $.
 		
-		\subsection{Wykrywanie przecięć}
+		\pagebreak
+		\subsection{Sprawdzanie widoczności}
+			
+			Zgodnie z opisem algorytmu w punkcie \ref{sssec:algo} sprawdzanie widoczności będziemy wykonywać dla zadanych punktów $ p $ i $ w $. W celu określenia, czy punkt $ w $ jest widoczny będziemy analizować strukturę stanu miotły. W niektórych przypadkach potrzebujemy dodatkowe informacje o punkcie z struktury zdarzeń, który był rozważany poprzednio. Oznaczamy ten punkt jako $ prev\_w $.
+			
+			\vspace{\baselineskip} % newline
 			Gdy zaczynamy rozpatrywać punkt, testujemy czy jest on widziany z punktu zaczepienia miotły.  W algorytmie spotykamy następujące przypadki:
 			
-			\img{przyp1.jpg}{Przypadek graniczny}
-				W tym przypadku najpierw dodany do struktury zostaje punkt $ A $. Następnie rozpatrujemy widoczność punktu $ E $. Algorytm najpierw sprawdza czy punkt poprzednio rozpatrywany należy do tej samej figury. Jeżeli tak, sprawdza czy odcinek $ AE $ przecina wnętrze figury. Jeżeli nie, punkt jest widoczny. Dopuszczamy widoczność wzdłuż krawędzi.
-				
-			\img{przyp2.jpg}{Przypadek graniczny}
-				Gdy punkt $ F $ leży ponad miotłą odcinek $ AE $ przecina wnętrze figury więc punkt $ E $ nie jest widoczny.
+			\paragraph{Przypadek 1}
+			Punkty $ p $ i $ w $ należą do tej samej figury i wektor $ \overrightarrow{wp} $ jest skierowany do wnętrza wielokąta.
 			
-			\img{przyp3.jpg}{Przypadek graniczny}
-				Tutaj punkt $ D $ będzie widoczny. Sprawdzamy czy punkt $ A $ jest widoczny. Jeżeli tak, to wyszukujemy w strukturze stanu czy pomiędzy punktami $ A $ i $ D $ znajduje się jakakolwiek krawędź. Jeżeli nie, rozpatrywany punkt jest widoczny.
-				
-			\img{przyp4.jpg}{Przypadek graniczny}
-				W tym przykładzie punkt $ G $ nie będzie widoczny ponieważ pomiędzy punktem $ A $ (który jest widoczny) a punktem $ G $ w strukturze stanu znajdują się dwie krawędzie.
-				
-			\img{przyp5.jpg}{Przypadek graniczny}
-				W tym przykładzie punkt $ D $ nie ma współliniowych poprzedników w strukturze zdarzeń. W takim przypadku wyszukujemy pierwszy odcinek w strukturze stanu i jeżeli taki istnieje i przecina miotłę to punkt nie będzie widoczny. Szukanie przeszkód przecinających odcinek $ DG $ w tym przypadku nie ma sensu. $ G $ również jest niewidoczny.
 			
-			\img{przyp6.jpg}{Przypadek graniczny}
-				Tutaj odcinek $ AB $ pokrywa się z miotłą. Dopuszczamy widoczność wzdłuż krawędzi. Punkt $ D $ będzie widoczny.
-						
+			\vspace{\baselineskip} % newline
+			W tym przypadku punkt $ w $ nie jest widoczny, ponieważ linia łącząca $ p $ i $ w $ przechodziłaby przez wnętrze figury.
+			
+			\vspace{\baselineskip} % newline
+			Przypadek musimy sprawdzić jako pierwszy, ponieważ taka sytuacja spełnia również przypadek 2 lub 3 i wtedy punkt $ w $ zostałby błędnie oznaczony jako widoczny.
+			
+			
+			\img{przypadek1.jpg}{Przykład dla przypadku 1}
+			
+			Jak widać na przykładzie wektor $ \overrightarrow{wp} $ jest skierowany do wnętrza wielokąta, zatem pomimo że miotła nie jest przecinana przez żaden odcinek punkt $ w $ nie jest widoczny.
+			
+			\pagebreak
+			\paragraph{Przypadek 2}
+			Nie zaszedł przypadek 1 i struktura stanu miotły jest pusta.
+			
+			\vspace{\baselineskip} % newline
+			Struktura stanu jest pusta zatem na linii z $ p $ do $ w $ nie może pojawić się żadna przeszkoda. Punkt $ w $ jest zatem widoczny.
+			
+			\img{przypadek2.jpg}{Przykład dla przypadku 2}
+			
+			\vspace{\baselineskip}
+
+			\paragraph{Przypadek 3}
+			Nie zaszedł żaden z powyższych przypadków i punkty $ p $, $ prev\_w $, $ w $ nie są współliniowe:
+			
+			\vspace{\baselineskip} % newline
+			Jest to przypadek, który standardowo będzie występował najczęściej. Aby stwierdzić czy punkt $ w $ jest widoczny należy sprawdzić, czy punkt przecięcia odcinka znajdującego się na samym początku struktury stanu (czyli najbliżej $ p $) z miotłą leży bliżej, czy dalej od $ p $ niż $ w $. Inaczej mówiąc sprawdzamy, czy odcinek $ pw $ przecina odcinek z struktury stanu. Jeżeli tak jest to oznacza, że pomiędzy $ p $ i $ w $ znajduje się przeszkoda i punkt $ w $ jest niewidoczny. W przeciwnym wypadku punkt ten jest widoczny.
+			
+			\img{przypadek3.1.jpg}{Przykład 1 dla przypadku 3}
+			
+			Pierwszy odcinek z struktury stanu to $ DE $, przecina się on z odcinkiem $ pw $, zatem punkt $ w $ nie jest widoczny.
+			
+			\img{przypadek3.2.jpg}{Przykład 2 dla przypadku 3}
+			
+			Pierwszy odcinek z struktury stanu to $ KJ $, nie przecina się on z odcinkiem $ pw $, zatem punkt $ w $ jest widoczny.
+			
+			\paragraph{Przypadek 4}
+			Nie zaszedł żaden z powyższych przypadków, punkty $ p $, $ prev\_w $, $ w $ są współliniowe oraz punkt $ prev\_w $ nie był widoczny:
+			
+			\vspace{\baselineskip} % newline
+			Współliniowe punkty w strukturze zdarzeń, są ustawione w kolejności rosnącej odległości od $ p $, zatem jeżeli $ prev\_w $ był niewidoczny, to $ w $ także nie jest widoczny.
+			
+			\img{przypadek4.jpg}{Przykład dla przypadku 4}
+			
+			Punkt $ E $ był rozważany bezpośrednio przed punktem $ w $ i jest on niewidoczny. Dodatkowo punkty $ p $, $ E $, $ w $ są współliniowe. Wynika z tego, że punkt $ w $ również nie jest widoczny.
+			
+			\paragraph{Przypadek 5}
+			Nie zaszedł żaden z powyższych przypadków, punkty $ p $, $ prev\_w $, $ w $ są współliniowe oraz punkt $ prev\_w $ był widoczny:
+			
+			\vspace{\baselineskip} % newline
+			Przypadek ten jest podobny do przypadku 3, jednak musimy rozważyć go osobno, ponieważ po przetworzeniu punktu $ prev\_w $ na początku struktury stanu mogły zostać umieszczone odcinki, które nie przecinają miotły. Aby w tym przypadku stwierdzić, czy punkt $ w $ jest widoczny sprawdzamy, czy w strukturze stanu znajduje się odcinek, który przecina $ w\,prev\_w $. 
+			
+			\vspace{\baselineskip} % newline
+			Gdy nie znajdziemy w strukturze stanu takiego odcinka, dodatkowo musimy rozważyć jeszcze jeden szczególny pod-przypadek, podobny do przypadku 1. Zachodzi on, gdy $ prev\_w $ i $ w $ należą do tej samej figury i wektor $ \overrightarrow{w\,prev\_w} $ jest skierowany do wnętrza wielokąta.
+			
+			\vspace{\baselineskip} % newline
+			Jeśli zachodzi którakolwiek z opisanych powyżej sytuacji, to $ w $ jest niewidoczny. W przeciwnym wypadku punkt ten jest widoczny.
+			
+			
+			\img{przypadek5.1.jpg}{Przykład 1 dla przypadku 5}
+			
+			Punkt $ D $ był rozważany bezpośrednio przed punktem $ w $ i jest widoczny. Punkty $ p $, $ D $, $ w $ są współliniowe. W strukturze stanu znajduje się odcinek $IJ$, który przecina $Dw$. Wynika z tego, że $ w $ jest niewidoczny.
+			
+			\img{przypadek5.2.jpg}{Przykład 2 dla przypadku 5}
+			
+			Punkt $ D $ był rozważany bezpośrednio przed $ w $ i jest widoczny, $ p $, $ D $, $ w $ są współliniowe. W strukturze stanu nie znajduje się odcinek, który przecina $Dw$, ale $ w $ i $ D $ należą do tej samej figury i wektor $ \overrightarrow{wD} $ jest skierowany do wnętrza wielokąta, zatem $ w $ jest niewidoczny.
+			
+			\img{przypadek5.3.jpg}{Przykład 3 dla przypadku 5}
+			
+			Punkt $ G $ był rozważany bezpośrednio przed punktem $ w $ i jest widoczny. Punkty $ p $, $ G $, $ w $ są współliniowe. W strukturze stanu nie znajduje się odcinek, który przecina $Gw$. Punkty $ w $ i $ G $ należą do różnych figur. Wynika z tego, że $ w $ jest widoczny.
+			
+			\img{przypadek5.4.jpg}{Przykład 4 dla przypadku 5}
+			
+			Punkt $ F $ był rozważany bezpośrednio przed punktem $ w $ i jest widoczny. Punkty $ p $, $ F $, $ w $ są współliniowe. W strukturze stanu nie znajduje się odcinek, który przecina $Fw$. Punkty $ w $ i $ F $ należą do tej samej figury, ale wektor $ \overrightarrow{wF} $ nie jest skierowany do wnętrza wielokąta, zatem $ w $ jest widoczny.
+			
+			\vspace{\baselineskip} % newline
+			\vspace{\baselineskip} % newline
+			\vspace{\baselineskip} % newline
+			
+			
+			%\img{przyp1.jpg}{Przypadek graniczny}
+			%	W tym przypadku najpierw dodany do struktury zostaje punkt $ A $. Następnie rozpatrujemy widoczność punktu $ E $. Algorytm najpierw sprawdza czy punkt poprzednio rozpatrywany należy do tej samej figury. Jeżeli tak, sprawdza czy odcinek $ AE $ przecina wnętrze figury. Jeżeli nie, punkt jest widoczny. Dopuszczamy widoczność wzdłuż krawędzi.
+				
+			%\img{przyp2.jpg}{Przypadek graniczny}
+			%	Gdy punkt $ F $ leży ponad miotłą odcinek $ AE $ przecina wnętrze figury więc punkt $ E $ nie jest widoczny.
+			
+			%\img{przyp3.jpg}{Przypadek graniczny}
+			%	Tutaj punkt $ D $ będzie widoczny. Sprawdzamy czy punkt $ A $ jest widoczny. Jeżeli tak, to wyszukujemy w strukturze stanu czy pomiędzy punktami $ A $ i $ D $ znajduje się jakakolwiek krawędź. Jeżeli nie, rozpatrywany punkt jest widoczny.
+				
+			%\img{przyp4.jpg}{Przypadek graniczny}
+			%	W tym przykładzie punkt $ G $ nie będzie widoczny ponieważ pomiędzy punktem $ A $ (który jest widoczny) a punktem $ G $ w strukturze stanu znajdują się dwie krawędzie.
+				
+			%\img{przyp5.jpg}{Przypadek graniczny}
+			%	W tym przykładzie punkt $ D $ nie ma współliniowych poprzedników w strukturze zdarzeń. W takim przypadku wyszukujemy pierwszy odcinek w strukturze stanu i jeżeli taki istnieje i przecina miotłę to punkt nie będzie widoczny. Szukanie przeszkód przecinających odcinek $ DG $ w tym przypadku nie ma sensu. $ G $ również jest niewidoczny.
+			
+			%\img{przyp6.jpg}{Przypadek graniczny}
+			%	Tutaj odcinek $ AB $ pokrywa się z miotłą. Dopuszczamy widoczność wzdłuż krawędzi. Punkt $ D $ będzie widoczny.
+		
+				\subsection{Kroki działania algorytmu}
+		Punkt $ A $ jest punktem zaczepienia miotły.
+		
+		\imgcustomsize{visibility-step000-001.jpg}{Przykład działania}{0.35}
+		Algorytm napotyka pierwsze zdarzenie.  Punkt $ D $ jest widoczny, ponieważ struktura stanu jest pusta. Odcinki incydentne $ DB $ i $ DC $ dodawane są do struktury stanu (w tej kolejności).
+		
+		\imgcustomsize{visibility-step000-002.jpg}{Przykład działania}{0.35}
+		$ DB $ jest usuwane ze struktury, $ BC $ zostaje dodane. Punkt $ B $ jest widoczny, ponieważ nie istnieje krawędź przecinająca miotłę pomiędzy $ A $ i $ B $.
+		
+		\imgcustomsize{visibility-step000-003.jpg}{Przykład działania}{0.35}
+		Dodajemy do struktury $ GF $ i $ GE $. Punkt $ G $ nie jest widoczny, bo zasłania go krawędź $ BC $ (pierwsza przecinająca miotłę).
+		
+		\imgcustomsize{visibility-step000-004.jpg}{Przykład działania}{0.35}
+		Usuwamy $ GE $, dodajemy $ EF $. Analogicznie do $ G $, punkt $ E $ nie jest widoczny.
+		
+		\imgcustomsize{visibility-step000-005.jpg}{Przykład działania}{0.35}
+		Usuwamy $ EF $ i $ GF $. Punkt $ F $ niewidoczny.
+		
+		\imgcustomsize{visibility-step000-006.jpg}{Przykład działania}{0.35}
+		Usuwamy $ BC $ i $ DC $. Punkt $ C $ widoczny.
+		
+		\imgcustomsize{visibility-sum-001.jpg}{Wynik działania}{0.35}
+		Tak wygląda wynik wykonania powyższych kroków. Następnie wybierany jest nowy punkt zaczepienia i algorytm powtarza kroki wykonane powyżej.
+		
+		\imgsidebyside{visibility-sum-002.jpg}{Miotła zaczepiona w $ B $}{visibility-sum-003.jpg}{Miotła zaczepiona w $ C $}
+		\imgsidebyside{visibility-sum-004.jpg}{Miotła zaczepiona w $ D $}{visibility-sum-005.jpg}{Miotła zaczepiona w $ E $}
+		\imgsidebyside{visibility-sum-006.jpg}{Miotła zaczepiona w $ F $}{visibility-sum-007.jpg}{Miotła zaczepiona w $ G $}
+		
+		Tak wygląda ostatecznie graf widoczności dla tego przypadku.
+		\tab{res/results.txt}{Reprezentacja grafu widzialności poprzez pary punktów}
+		
+		
 		\subsection{Testy}
 				Testy odzwierciedlają przedstawione wyżej sytuacje.
+			
+			\imgcustomsize{download.png}{Test obrazka}{0.8}
+			
 			
 			\img{test1.png}{Przypadek testowy}
 				Wierzchołek widoczny, gdy figura jest wklęsła.
@@ -299,38 +439,9 @@
 			\img{test6.png}{Przypadek testowy}
 				Wierzchołek widoczny, gdy miotła pokrywa się z krawędzią.
 		
-		\subsection{Kroki działania algorytmu}
-			Punkt $ A $ jest punktem zaczepienia miotły.
-		
-			\imgcustomsize{visibility-step000-001.jpg}{Przykład działania}{0.35}
-				Algorytm napotyka pierwsze zdarzenie.  Punkt $ D $ jest widoczny, ponieważ struktura stanu jest pusta. Odcinki incydentne $ DB $ i $ DC $ dodawane są do struktury stanu (w tej kolejności).
-			
-			\imgcustomsize{visibility-step000-002.jpg}{Przykład działania}{0.35}
-				$ DB $ jest usuwane ze struktury, $ BC $ zostaje dodane. Punkt $ B $ jest widoczny, ponieważ nie istnieje krawędź przecinająca miotłę pomiędzy $ A $ i $ B $.
-			
-			\imgcustomsize{visibility-step000-003.jpg}{Przykład działania}{0.35}
-				Dodajemy do struktury $ GF $ i $ GE $. Punkt $ G $ nie jest widoczny, bo zasłania go krawędź $ BC $ (pierwsza przecinająca miotłę).
-			
-			\imgcustomsize{visibility-step000-004.jpg}{Przykład działania}{0.35}
-				Usuwamy $ GE $, dodajemy $ EF $. Analogicznie do $ G $, punkt $ E $ nie jest widoczny.
-			
-			\imgcustomsize{visibility-step000-005.jpg}{Przykład działania}{0.35}
-				Usuwamy $ EF $ i $ GF $. Punkt $ F $ niewidoczny.
-			
-			\imgcustomsize{visibility-step000-006.jpg}{Przykład działania}{0.35}
-				Usuwamy $ BC $ i $ DC $. Punkt $ C $ widoczny.
-			
-			\imgcustomsize{visibility-sum-001.jpg}{Wynik działania}{0.35}
-				Tak wygląda wynik wykonania powyższych kroków. Następnie wybierany jest nowy punkt zaczepienia i algorytm powtarza kroki wykonane powyżej.
-			
-			\imgsidebyside{visibility-sum-002.jpg}{Miotła zaczepiona w $ B $}{visibility-sum-003.jpg}{Miotła zaczepiona w $ C $}
-			\imgsidebyside{visibility-sum-004.jpg}{Miotła zaczepiona w $ D $}{visibility-sum-005.jpg}{Miotła zaczepiona w $ E $}
-			\imgsidebyside{visibility-sum-006.jpg}{Miotła zaczepiona w $ F $}{visibility-sum-007.jpg}{Miotła zaczepiona w $ G $}
-			
-			Tak wygląda ostatecznie graf widoczności dla tego przypadku.
-			\tab{res/results.txt}{Reprezentacja grafu widzialności poprzez pary punktów}
+
 			
 
-% TODO Testy jakieś\textbf{d}
+% TODO Testy jakieś
 % TODO bibliografia
 \end{document}
