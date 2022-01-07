@@ -462,7 +462,7 @@ P = [Point(-2, -2), Point(4, 3)]
 				Punkt $ E $ jest widoczny, ponieważ $ B $ jest widoczny i należą do różnych figur oraz pomiędzy nimi nie ma żadnej krawędzi przecinającej odcinek $ BE $.
 			
 			\imgcustomsize{test4.jpg}{Przypadek testowy}{0.75}
-				Tutaj analogicznie jak wyżej, ale $ BH $ jest przecięty dwoma odcinkami wiec $ H $ nie będzie widoczny.
+				Tutaj analogicznie jak wyżej, $ B $ jest widoczny i punkty $ B $ i $ H $ należą do różnych figur, ale $ BH $ jest przecięty dwoma odcinkami więc $ H $ nie będzie widoczny.
 			
 			\imgcustomsize{test5.jpg}{Przypadek testowy}{0.75}
 				Jeżeli $ E $ jest niewidoczny to nie ma sensu badać widoczności $ H $, ponieważ jest on dalej od punktu zaczepienia miotły (punktu $ A $).
@@ -481,16 +481,18 @@ P = [Point(-2, -2), Point(4, 3)]
 			\imgcustomsize{test-losowe1.jpg}{8 figur na płaszczyźnie 7 x 7}{1}
 			\imgcustomsize{test-losowe2.jpg}{10 figur na płaszczyźnie 21 x 21}{1}
 			\imgcustomsize{test-losowe3.jpg}{20 figur na płaszczyźnie 16 x 16}{1}
-			\imgcustomsize{test-losowe4.jpg}{25 figur na płaszczyźnie 3 x 31}{1}
-			\imgcustomsize{test-losowe5.jpg}{50 figur na płaszczyźnie 3 x 31}{1}
-			\imgcustomsize{test-losowe6.jpg}{100 figur na płaszczyźnie 3 x 31}{1}
+			\imgcustomsize{test-losowe4.jpg}{25 figur na płaszczyźnie 31 x 31}{1}
+			\imgcustomsize{test-losowe5.jpg}{50 figur na płaszczyźnie 31 x 31}{1}
+			\imgcustomsize{test-losowe6.jpg}{100 figur na płaszczyźnie 31 x 31}{1}
 		
 		\subsubsection{Czasy wykonania dla losowych figur}
 			\begin{itemize}
-				\item 8 figur na płaszczyźnie 6 x 6 -- 0.02992 sekund
-				\item 10 figur na płaszczyźnie 20 x 20 -- 0.03509 sekund
-				\item 20 figur na płaszczyźnie 14 x 14 -- 0.15869 sekund
-				\item 100 figur na płaszczyźnie 30 x 30 -- 5.33344 sekund
+				\item 8 figur na płaszczyźnie 7 x 7 -- 0.02992 sekund
+				\item 10 figur na płaszczyźnie 21 x 21 -- 0.03509 sekund
+				\item 20 figur na płaszczyźnie 16 x 16 -- 0.15869 sekund
+				\item 25 figur na płaszczyźnie 31 x 31 -- 0.48271 sekund
+				\item 50 figur na płaszczyźnie 31 x 31 -- 2.22763 sekund
+				\item 100 figur na płaszczyźnie 31 x 31 -- 10.30278 sekund
 			\end{itemize}
 		
 		\subsection{Testy znajdowania najkrótszej ścieżki}
@@ -499,8 +501,8 @@ P = [Point(-2, -2), Point(4, 3)]
 	
 	\section{Wnioski}
 		\begin{itemize}
-			\item Algorytm poprawnie wykonuje testy.
-			% TODO więcej wniosków?
+			\item Algorytm poprawnie wykonuje testy,
+			\item Na podstawie testów czasowych złożoność zgadza się z oczekiwaną.
 		\end{itemize}
 	
 	\section{Bibliografia}
