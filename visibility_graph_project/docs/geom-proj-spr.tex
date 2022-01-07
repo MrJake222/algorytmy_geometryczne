@@ -206,7 +206,6 @@
 	
 	\paragraph{\lstinline|plot_tool_helpers.py|}
 		\begin{itemize}
-			% TODO nie wiem
 			\item \lstinline|visibility_graph_scenes| -- Zwraca utworzoną sceny dla wykresu grafu widoczności,
 			\item \lstinline|visibility_graph_scenes_separately| -- Zwraca utworzoną sceny dla wykresu grafu widoczności, z podziałem na kolejne wierzchołki,
 			\item \lstinline|shortest_path_scene| -- Zwraca utworzoną scenę dla wykresu najkrótszej ścieżki,
@@ -477,7 +476,8 @@ P = [Point(-2, -2), Point(4, 3)]
 			\imgcustomsize{test10.jpg}{Przypadek testowy}{1}
 		
 		\subsection{Testy losowe}
-			% TODO opis testy losowe
+			Poniższe ilustracje przedstawiają losowe testy wykonane przy użyciu modułu \lstinline|plot_tool_helpers.py|.
+			
 			\imgcustomsize{test-losowe1.jpg}{Przypadek testowy}{1}
 			\imgcustomsize{test-losowe2.jpg}{Przypadek testowy}{1}
 			\imgcustomsize{test-losowe3.jpg}{Przypadek testowy}{1}
@@ -486,7 +486,21 @@ P = [Point(-2, -2), Point(4, 3)]
 		\subsection{Testy znajdowania najkrótszej ścieżki}
 			\imgcustomsize{p1.jpg}{Przypadek testowy}{0.75}
 			\imgcustomsize{p2.jpg}{Przypadek testowy}{0.75}
-		
+	
+		\subsection{Czasy wykonania dla losowych figur}
+			\begin{itemize}
+				\item 8 figur na płaszczyźnie 6 x 6 -- 0.02992 sekund
+				\item 10 figur na płaszczyźnie 20 x 20 -- 0.03509 sekund
+				\item 20 figur na płaszczyźnie 14 x 14 -- 0.15869 sekund
+				\item 100 figur na płaszczyźnie 30 x 30 -- 5.33344 sekund
+			\end{itemize}
+	
+	\section{Wnioski}
+		\begin{itemize}
+			\item Algorytm poprawnie wykonuje testy.
+			% TODO więcej wniosków?
+		\end{itemize}
+	
 	\section{Bibliografia}
 		Algorytm został przygotowany na podstawie książki Marka de Berga pt. \textit{Geometria Obliczeniowa - Algorytmy i Zastosowania}.
 
