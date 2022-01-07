@@ -11,6 +11,7 @@
 \usepackage{graphicx} % obrazy
 \usepackage{float} % dla image [H]
 \usepackage{fancyhdr} % nagłówki stron
+\usepackage{pythonhighlight}
 
 % bez odstępu w itemize
 \let\tempone\itemize
@@ -101,17 +102,25 @@
 		\begin{tabular}{l|l}
 			NumPy&1.21.2\\
 			MatPlotLib&3.4.3\\
-			Jupyer Notebook&6.4.4
+			Jupyter Notebook&6.4.4
 		\end{tabular}
 	
 	\subsection{Opis programu}
-		% TODO może coś więcej tutaj
 		Program został napisany w języku Python. Interfejs dla użytkownika dostępny jest w pliku \lstinline|.ipynb|, wykorzystuje on narzędzie Jupyter Notebook.
 	
 	\subsection{Moduły}
 		Poniżej znajduje się opis modułów i metod w nich występujących.
 	
-		\paragraph{\lstinline|create_visibility_graph.py|}
+	\paragraph{\lstinline|helpers.py|}
+		Zawiera funkcje pomocnicze do obliczania grafu widoczności.
+		\begin{itemize}
+			\item \lstinline|dist_p_to_intersection(p, w, line)| -- Oblicza dla zadanych punktów $ p $, $ w $ i pewnego odcinka, odległość punktu $ p $ od przecięcia $ pw $ z tym odcinkiem. Jeśli są równoległe zwracany jest środek zadanego odcinka,\\
+			\item \lstinline|intersection(line1, line2)| -- Zwraca $ True $/$ False $ w zależności, czy zadane odcinki się przecinają,\\
+			\item \lstinline|orient(a, b, c)| -- Określa w jaki sposób zorientowane są trzy zadane punkty. Zwraca wartość $ 1 $, gdy są zorientowane przeciwnie do ruchu wskazówek zegara; $ 0 $, gdy są współliniowe; $ -1 $ gdy ich orientacja jest zgodna z ruchem wskazówek zegara,\\
+			\item \lstinline|dist(a, b)| -- Oblicza odległość pomiędzy dwoma punktami na płaszczyźnie.
+		\end{itemize}
+	
+	\paragraph{\lstinline|create_visibility_graph.py|}
 		Zawiera implementację algorytmu obliczania grafu widzialności.
 		\begin{itemize}
 			\item \lstinline|find_internal_lines| -- Implementuje algorytm, który znajduje dla każdego punktu figury, inne wierzchołki tego samego wielokąta, takie że linia je łącząca jest skierowana do wnętrza figury. Złożoność $ O(n^2) $,
@@ -123,6 +132,7 @@
 		\begin{itemize}
 			\item \lstinline|__init__| -- Konstruktor,
 			\item \lstinline|add_edge| -- Dodaje krawędź do grafu,
+			\item \lstinline|get_graph| -- Zwraca graf reprezentowany w postaci opisywanej w punkcie \ref{sssec:repr},
 			\item \lstinline|get_points| -- Zwraca listę krotek reprezentujących zbiór wierzchołków grafu,
 			\item \lstinline|get_lines| -- Zwraca listę krawędzi,
 			\item \lstinline|get_lines_separately| -- Zwraca listę list krawędzi z podziałem na wierzchołki początkowe krawędzi,
@@ -137,6 +147,12 @@
 		\begin{itemize}
 			\item \lstinline|dijkstra| -- Implementuje algorytm Dijkstry. Złożoność $ O(n \cdot log(n)) $,
 			\item \lstinline|shortest_path| -- Funkcja wyznaczająca najkrótszą ścieżkę pomiędzy dwoma zadanymi punktami, na płaszczyźnie zawierającej przeszkody w postaci wielokątów.
+		\end{itemize}
+	
+	\paragraph{\lstinline|random_figures_generator.py|}
+		Zawiera funkcje służące do generowania w sposób losowy figur na płaszczyźnie.
+		\begin{itemize}
+			\item \lstinline|generate_random_figures| -- Funkcja zwraca listę $ n $ losowo wygenerowanych kwadratów, dla zadanego $ n $ oraz rozmiaru płaszczyzny generowania.
 		\end{itemize}
 	
 	\paragraph{\lstinline|Point.py|}
@@ -191,31 +207,66 @@
 	\paragraph{\lstinline|plot_tool_helpers.py|}
 		\begin{itemize}
 			% TODO nie wiem
-			\item \lstinline|visibility_graph_scenes| -- 
-			\item \lstinline|visibility_graph_scenes_separately| -- 
-			\item \lstinline|shortest_path_scene| -- 
-			\item \lstinline|get_figures_from_plot| -- 
-			\item \lstinline|get_points_from_plot| -- 
-		\end{itemize}
-	
-	\paragraph{\lstinline|helpers.py|}
-		Zawiera funkcje pomocnicze do obliczania grafu widoczności.
-		\begin{itemize}
-			\item \lstinline|dist_p_to_intersection(p, w, line)| -- Oblicza dla zadanych punktów $ p $, $ w $ i pewnego odcinka, odległość punktu $ p $ od przecięcia $ pw $ z tym odcinkiem. Jeśli są równoległe zwracany jest środek zadanego odcinka,\\
-			\item \lstinline|intersection(line1, line2)| -- Zwraca $ True $/$ False $ w zależności, czy zadane odcinki się przecinają,\\
-			\item \lstinline|orient(a, b, c)| -- Określa w jaki sposób zorientowane są trzy zadane punkty. Zwraca wartość $ 1 $, gdy są zorientowane przeciwnie do ruchu wskazówek zegara; $ 0 $, gdy są współliniowe; $ -1 $ gdy ich orientacja jest zgodna z ruchem wskazówek zegara,\\
-			\item \lstinline|dist(a, b)| -- Oblicza odległość pomiędzy dwoma punktami na płaszczyźnie.
+			\item \lstinline|visibility_graph_scenes| -- Zwraca utworzoną sceny dla wykresu grafu widoczności,
+			\item \lstinline|visibility_graph_scenes_separately| -- Zwraca utworzoną sceny dla wykresu grafu widoczności, z podziałem na kolejne wierzchołki,
+			\item \lstinline|shortest_path_scene| -- Zwraca utworzoną scenę dla wykresu najkrótszej ścieżki,
+			\item \lstinline|get_figures_from_plot| -- Zwraca figury dodane do wykresu jako obiekty klasy $ Figure $,
+			\item \lstinline|get_points_from_plot| -- Zwraca punkty dodane do wykresu jako obiekty klasy $ Point $.
 		\end{itemize}
 
 	\section{Informacje użytkownika}
 	
-	\subsection{Uruchomienie programu}
-		% TODO może coś więcej tutaj
-		Należy w katalogu z plikiem \lstinline|project.ipynb| uruchomić narzędzie Jupyter Notebook.
+		\subsection{Uruchomienie programu}
+			Należy w katalogu z plikiem \lstinline|project.ipynb| uruchomić narzędzie Jupyter Notebook, a następnie wybrać z listy ten plik i go uruchomić.
 	
-	\subsection{Funkcje programu}
-			% TODO Tutaj opis Jupytera
+		\subsection{Funkcje programu}
+			Aby wszystkie funkcje działały prawidłowo, w pierwszej kolejności należy uruchomić komórkę \textbf{Konfiguracja}, która importuje potrzebne moduły oraz komórkę \textbf{Funkcje pomocnicze do tworzenia rysunków}, która importuje funkcje tworzące sceny dla wykresów.
+		
+			\subsubsection{Sekcja 1 -- Przykład 1 - Wyznaczenie grafu widoczności}
+				Sekcja ta zawiera prosty przykład wyznaczania grafu widoczności. Na początku należy uruchomić komórkę \textbf{Wczytywanie przykładowych figur}. Kiedy figury zostaną załadowane można uruchomić następujące komórki:
+				\begin{itemize}
+					\item \textbf{Wyświetlenie grafu widoczności} -- Po uruchomieniu komórki wyświetlany jest graf widoczności. Niebieskimi liniami zaznaczone są jego krawędzie, a wierzchołki są oznaczone zielonymi punktami i są nazwane kolejnymi literami alfabetu. Używając przycisków \textbf{Poprzedni}, \textbf{Następny} można zmienić scenę. W tym przypadku na drugiej scenie znajduje się graf widoczności z zaznaczonymi poprzez czerwone przerywane linie wprowadzonymi figurami.
+					\item \textbf{Wyświetlenie incydentnych krawędzi grafu widoczności dla kolejnych wierzchołków} -- Działa podobnie co poprzednia komórka, z tą różnicą, że wyświetlany graf posiada krawędzie wychodzące z jednego wierzchołka. Aby zmienić ten wierzchołek, należy przejść do kolejnej sceny.
+					\item \textbf{Zapisywanie kolejnych kroków algorytmu do plików .jpg w folderze out} -- Tak jak wskazuje opis komórki, zapisuje ona kolejne kroki algorytmu w postaci rysunków do folderu $ out $. Objaśnienie co reprezentują kolejne kroki znajduje się w punkcie \ref{sssec:steps}.
+				\end{itemize}
 	
+			\subsubsection{Sekcja 2 -- Wyznaczanie grafu widoczności dla wprowadzonych figur}
+				Sekcja ta działa podobnie jak poprzednia, różnią się tylko pierwszą komórką. W tym przypadku jest nią \textbf{Wprowadzanie figury}. Wyświetla ona pusty wykres, na którym po kliknięciu \textbf{Dodaj figurę}, dodajemy kolejne wielokąty używając lewego przycisku myszy. Aby zakończyć dodawanie należy zamknąć figurę, klikając na punkt dodany jako pierwszy. Ważne jest, że wierzchołki figury muszą być wprowadzane w kolejności odwrotnej do ruchu wskazówek zegara.
+				
+				\vspace{\baselineskip} % newline
+				Pozostałe komórki działają analogicznie jak w poprzedniej sekcji.
+			
+			\subsubsection{Sekcja 3 -- Przykład 2 - Wyznaczanie najkrótszej ścieżki pomiędzy dwoma punktami na płaszczyźnie z przeszkodami}
+				Sekcja zawiera przykład wyznaczania najkrótszej ścieżki na płaszczyźnie z przeszkodami w postaci wielokątów. Podobnie jak w sekcji 1 najpierw należy uruchomić komórkę \textbf{Wczytywanie przykładowych figur i punktów}. Druga i ostatnia w tej sekcji komórka, opisana jako \textbf{Wyświetlanie najkrótszej ścieżki}, wyświetla rysunek, na którym niebieskimi liniami zaznaczona jest najkrótsza ścieżka pomiędzy dwoma zadanymi punktami $ A $ i $ B $. Przeszkody w postaci figur oznaczone są czerwoną przerywaną linią.
+		
+			\subsubsection{Sekcja 4 -- Wyznaczanie najkrótszej ścieżki pomiędzy dwoma punktami na płaszczyźnie z przeszkodami, na podstawie wprowadzonych wprowadzonych figur i punktów}
+				Sekcja różni się od poprzedniej pierwszą komórką, tutaj jest nią \textbf{Wprowadzanie figury}. Pozwala ona na dodawanie figur przez użytkownika podobnie jak w sekcji 2, z tą różnicą, że konieczne jest także dodanie dwóch punktów. Aby to zrobić klikamy jednokrotnie przycisk \textbf{Dodaj punkt}, a następnie wybieramy lewym przyciskiem myszy dwa punkty na wykresie. Należy pamiętać, że wierzchołki figury muszą być wprowadzane w kolejności odwrotnej do ruchu wskazówek zegara.
+			
+			\subsubsection{Sekcja 5 -- Testy}
+				Zawiera serię przygotowanych danych testowych. Dane te są ładowane w komórce \textbf{Załadowanie testów}, a następnie mamy możliwość ich wykonania i zapisania wyników w postaci wykresów w komórce \textbf{Wykonanie testów i zapisanie rysunków wynikowych w folderze out} oraz sprawdzenie czasu wykonania algorytmu dla danego testu w komórce \textbf{Wyświetlanie czasu wykonania poszczególnych testów}.
+			
+			\subsubsection{Sekcja 6 -- Manualne wprowadzanie figur i punktów}
+				Sekcja pozwala na ręczne wprowadzenie figur i punktów, na podstawie których utworzony zostanie graf widoczności oraz wyznaczona zostanie najkrótsza ścieżka, jeśli podane będą dwa dodatkowe punkty. Dane te wprowadzamy w komórce \textbf{Wczytywanie figur i punktów} w następujący sposób:
+				\begin{itemize}
+					\item \textbf{Figury} -- Dodajemy je w postaci obiektów klasy $ Figure $ do listy $ F $. Obiekt klasy $ Figure $ tworzymy podając do konstruktora listę obiektów klasy $ Point $. Obiekt klasy $ Point $ tworzymy z kolei podając do konstruktora dwuelementową krotkę reprezentującą współrzędne punktu.
+					\item \textbf{Punkty} -- Podajemy je jako listę $ P $ obiektów klasy $ Point $ tworzonych w sposób opisany powyżej. Lista powinna zawierać 2 punkty, jeśli będzie ich za mało najkrótsza ścieżka nie zostanie wyznaczona, natomiast jeśli będzie ich za dużo, wybrane zostaną 2 pierwsze punkty z listy.
+				\end{itemize}
+				
+				\vspace{\baselineskip} % newline
+				
+				\begin{python}
+					
+F = [Figure([Point(0, 0), Point(1, 0), Point(0, 1)]), 
+	 Figure([Point(3, 3), Point(3, 2), Point(4, 2)])]
+
+P = [Point(-2, -2), Point(4, 3)] 
+				\end{python}
+				
+				\begin{center}
+					Powyższy fragment kody przedstawia przykład wprowadzania\\ opisywanych wyżej figur i punktów.
+				\end{center}
+			
+		
 	\section{Sprawozdanie}
 	
 	\subsection{Opis problemu}
@@ -355,29 +406,6 @@
 			\img{przypadek5.4.jpg}{Przykład 4 dla przypadku 5}
 			
 			Punkt $ F $ był rozważany bezpośrednio przed punktem $ w $ i jest widoczny. Punkty $ p $, $ F $, $ w $ są współliniowe. W strukturze stanu nie znajduje się odcinek, który przecina $Fw$. Punkty $ w $ i $ F $ należą do tej samej figury, ale wektor $ \overrightarrow{wF} $ nie jest skierowany do wnętrza wielokąta, zatem $ w $ jest widoczny.
-			
-			\vspace{\baselineskip} % newline
-			\vspace{\baselineskip} % newline
-			\vspace{\baselineskip} % newline
-			
-			
-			%\img{przyp1.jpg}{Przypadek graniczny}
-			%	W tym przypadku najpierw dodany do struktury zostaje punkt $ A $. Następnie rozpatrujemy widoczność punktu $ E $. Algorytm najpierw sprawdza czy punkt poprzednio rozpatrywany należy do tej samej figury. Jeżeli tak, sprawdza czy odcinek $ AE $ przecina wnętrze figury. Jeżeli nie, punkt jest widoczny. Dopuszczamy widoczność wzdłuż krawędzi.
-				
-			%\img{przyp2.jpg}{Przypadek graniczny}
-			%	Gdy punkt $ F $ leży ponad miotłą odcinek $ AE $ przecina wnętrze figury więc punkt $ E $ nie jest widoczny.
-			
-			%\img{przyp3.jpg}{Przypadek graniczny}
-			%	Tutaj punkt $ D $ będzie widoczny. Sprawdzamy czy punkt $ A $ jest widoczny. Jeżeli tak, to wyszukujemy w strukturze stanu czy pomiędzy punktami $ A $ i $ D $ znajduje się jakakolwiek krawędź. Jeżeli nie, rozpatrywany punkt jest widoczny.
-				
-			%\img{przyp4.jpg}{Przypadek graniczny}
-			%	W tym przykładzie punkt $ G $ nie będzie widoczny ponieważ pomiędzy punktem $ A $ (który jest widoczny) a punktem $ G $ w strukturze stanu znajdują się dwie krawędzie.
-				
-			%\img{przyp5.jpg}{Przypadek graniczny}
-			%	W tym przykładzie punkt $ D $ nie ma współliniowych poprzedników w strukturze zdarzeń. W takim przypadku wyszukujemy pierwszy odcinek w strukturze stanu i jeżeli taki istnieje i przecina miotłę to punkt nie będzie widoczny. Szukanie przeszkód przecinających odcinek $ DG $ w tym przypadku nie ma sensu. $ G $ również jest niewidoczny.
-			
-			%\img{przyp6.jpg}{Przypadek graniczny}
-			%	Tutaj odcinek $ AB $ pokrywa się z miotłą. Dopuszczamy widoczność wzdłuż krawędzi. Punkt $ D $ będzie widoczny.
 		
 		\subsection{Kroki działania algorytmu} \label{sssec:steps}
 			Punkt $ A $ jest punktem zaczepienia miotły. Miotła jest reprezentowana jako czerwony odcinek z $ A $ do obecnie przetwarzanego punktu.
@@ -412,7 +440,7 @@
 			
 			Tak wygląda ostatecznie graf widoczności dla tego przypadku.
 		
-		\subsection{Reprezentacja grafu}
+		\subsection{Reprezentacja grafu} \label{sssec:repr}
 
 		Graf jest zwracany przez funkcję $ create\_visibility\_graph $ jako obiekt klasy $ VisibilityGraph $. Wewnątrz klasy graf jest reprezentowany jako słownik słowników. Dla każdego wierzchołka (reprezentowanego jako obiekt klasy $ Point $) przechowywany jest słownik jego sąsiadów (widocznych punktów), gdzie kluczem jest sąsiadujący wierzchołek (również reprezentowany jako obiekt klasy $ Point $), a wartością jest odległość tych dwóch punktów na płaszczyźnie. Graf w takiej postaci zwracany jest przez metodę $ get\_graph $.
 		

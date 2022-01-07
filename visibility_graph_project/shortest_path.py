@@ -13,9 +13,10 @@ def dijkstra(graph, s, t):
     parent = {x: None for x in graph.keys()}
     visited = {x: False for x in graph.keys()}
 
-    queue.put((0, s))
+    i = 0
+    queue.put((0, i, s))
     while not queue.empty():
-        u = queue.get()[1]
+        u = queue.get()[2]
 
         if visited[u]:
             continue
@@ -25,7 +26,8 @@ def dijkstra(graph, s, t):
             if not visited[v] and d[u] + edge_weight < d[v]:
                 parent[v] = u
                 d[v] = d[u] + edge_weight
-                queue.put((d[v], v))
+                i += 1
+                queue.put((d[v], i, v))
 
     path = []
     u = t
