@@ -268,9 +268,12 @@ P = [Point(-2, -2), Point(4, 3)]
 		
 	\section{Sprawozdanie}
 	
-	\subsection{Opis problemu}
-		\paragraph{Graf widzialności}
+	\subsection{Opis problemu} \label{sssec:opis}
+		\paragraph{Graf widoczności}
 			Jest to graf gdzie zbiorem wierzchołków jest zbiór punktów na płaszczyźnie, a krawędzie istnieją tylko kiedy wierzchołki "widzą się", tzn. nie istnieje pomiędzy nimi przeszkoda w postaci figury.
+		
+		\paragraph{Zastosowanie}
+			Jednym z zastosowań grafu widoczności jest możliwość wyznaczenia na jego podstawie najkrótszej ścieżki pomiędzy dwoma punktami na płaszczyźnie, na której znajdują się przeszkody w postaci wielokątów. Aby to zrobić wystarczy nadać krawędziom wagi odpowiadające odległościom pomiędzy punktami na płaszczyźnie, a następnie wykonać na takim grafie dowolny algorytm szukania najkrótszej ścieżki.
 		
 		\paragraph{Wstęp}
 			Trywialny algorytm wymagałby sprawdzenia każdej pary wierzchołków w czasie $ O(n^2) $. Każde takie sprawdzenie wymagałoby przejrzenia wszystkich innych wierzchołków w czasie $ O(n) $, co prowadziłoby do algorytmu o złożoności $ O(n^3) $. Jednak jeżeli wykorzystamy zrównoważone drzewo binarne do wyszukiwania przeszkód, jesteśmy w stanie obniżyć złożoność do poziomu $ O(n^2 \cdot log(n)) $.
@@ -284,7 +287,7 @@ P = [Point(-2, -2), Point(4, 3)]
 	\subsection{Algorytm wyznaczania widocznych wierzchołków dla punktu $ p $} \label{sssec:algo}
 		Algorytm polega na zamiataniu płaszczyzny i odbywa się wg następujących kroków:
 		\begin{enumerate}
-			\item Posortuj wierzchołki na podstawie kąta (zgodnego z ruchem wskazówek zegara) jaki półprosta z p do danego wierzchołka tworzy z dodatnią półosią OX. Gdy kąt jest taki sam, wierzchołek bliższy p powinien znajdować się przed wierzchołkiem dalszym. Wierzchołki w tej kolejności umieść w strukturze zdarzeń.
+			\item Posortuj wierzchołki na podstawie kąta (zgodnego z ruchem wskazówek zegara) jaki półprosta z $ p $ do danego wierzchołka tworzy z dodatnią półosią OX. Gdy kąt jest taki sam, wierzchołek bliższy $ p $ powinien znajdować się przed wierzchołkiem dalszym. Wierzchołki w tej kolejności umieść w strukturze zdarzeń.
 			\item Zaczep miotłę w badanym punkcie i zwróć ją w kierunku dodatniej półosi OX.
 			\item Dodaj do struktury stanu krawędzie przecinające miotłę w położeniu początkowym.
 			\item Dla kolejnych punktów $ w $ z struktury zdarzeń:
@@ -406,6 +409,14 @@ P = [Point(-2, -2), Point(4, 3)]
 			
 			Punkt $ F $ był rozważany bezpośrednio przed punktem $ w $ i jest widoczny. Punkty $ p $, $ F $, $ w $ są współliniowe. W strukturze stanu nie znajduje się odcinek, który przecina $Fw$. Punkty $ w $ i $ F $ należą do tej samej figury, ale wektor $ \overrightarrow{wF} $ nie jest skierowany do wnętrza wielokąta, zatem $ w $ jest widoczny.
 		
+			\paragraph{Złożoność}
+			Sprawdzenie, czy wektor pomiędzy dwoma wierzchołkami tej samej figury jest skierowany do środka wielokąta, dokonujemy przed wykonaniem algorytmu wyznaczania grafu widoczności. Nie pogarsza to złożoności całego algorytmu, ponieważ sprawdzenia takiego dokonujemy w złożoności $ O(n^2) $. Dzięki temu podczas sprawdzania widoczności jesteśmy w stanie uzyskać informację czy dany wektor jest skierowany do wnętrza figury w czasie $ O(1) $. 
+			Najbardziej kosztowna jest operacja znalezienia odcinka w strukturze stanu (Przypadek 3 i 5), wymaga ona czasu $ O(log(n)) $. Wszystkie pozostałe operacje, takie jak sprawdzenie przecinania się odcinków, czy też sprawdzenie współliniowości 3 punktów wymaga czasu $ O(1) $.
+			
+			\vspace{\baselineskip} % newline
+			Z powyższej analizy wynika, że czas potrzebny na stwierdzeniem, czy dany wierzchołek jest widoczny, to $ O(log(n)) $.
+		
+		
 		\subsection{Kroki działania algorytmu} \label{sssec:steps}
 			Punkt $ A $ jest punktem zaczepienia miotły. Miotła jest reprezentowana jako czerwony odcinek z $ A $ do obecnie przetwarzanego punktu.
 			
@@ -451,32 +462,38 @@ P = [Point(-2, -2), Point(4, 3)]
 		
 		\tab{res/results.txt}{Reprezentacja grafu widoczności poprzez pary punktów tworzące listę krawędzi}
 		
-		\subsection{Testy}
-			\imgcustomsize{test1.jpg}{Przypadek testowy}{0.75}
+		\newpage
+		\subsection{Testy} \label{sssec:tests}
+			Na poniższych wykresach przedstawione zostały wyniki testów działania algorytmu, w postaci graficznej. Przedstawiają one grafy widoczności, gdzie wierzchołki zaznaczono kolorem zielonym, a krawędzie niebieskimi liniami. Figury stanowiące przeszkody również zostały zawarte na wykresach i są oznaczone kolorem czerwonym. W testach 1-6 pokazane zostały krawędzie grafu widoczności tylko dla jednego wybranego wierzchołka oraz testy te zawierają dodatkowy opis przedstawianej sytuacji.
+		
+		
+			\imgcustomsize{test1.jpg}{Przypadek testowy 1}{0.75}
 				Wierzchołek $ F $ jest widoczny, ponieważ $ B $ jest widoczny i miotły nie przecinają żadne krawędzie na odcinku $ BF $ oraz wektor $ \overrightarrow{FB} $ nie jest skierowany do wnętrza figury.
 			
-			\imgcustomsize{test2.jpg}{Przypadek testowy}{0.75}
+			\imgcustomsize{test2.jpg}{Przypadek testowy 2}{0.75}
 				Tutaj wektor $ FB $ jest skierowany do wnętrza figury więc punkt $ F $ jest niewidoczny (przerywana linia ma za zadanie tylko podkreślić fakt, że punkty $ B $ i $ F $ są współliniowe).
 			
-			\imgcustomsize{test3.jpg}{Przypadek testowy}{0.75}
+			\imgcustomsize{test3.jpg}{Przypadek testowy 3}{0.75}
 				Punkt $ E $ jest widoczny, ponieważ $ B $ jest widoczny i należą do różnych figur oraz pomiędzy nimi nie ma żadnej krawędzi przecinającej odcinek $ BE $.
 			
-			\imgcustomsize{test4.jpg}{Przypadek testowy}{0.75}
+			\imgcustomsize{test4.jpg}{Przypadek testowy 4}{0.75}
 				Tutaj analogicznie jak wyżej, $ B $ jest widoczny i punkty $ B $ i $ H $ należą do różnych figur, ale $ BH $ jest przecięty dwoma odcinkami więc $ H $ nie będzie widoczny.
 			
-			\imgcustomsize{test5.jpg}{Przypadek testowy}{0.75}
+			\imgcustomsize{test5.jpg}{Przypadek testowy 5}{0.75}
 				Jeżeli $ E $ jest niewidoczny to nie ma sensu badać widoczności $ H $, ponieważ jest on dalej od punktu zaczepienia miotły (punktu $ A $).
 			
-			\imgcustomsize{test6.jpg}{Przypadek testowy}{0.75}
+			\imgcustomsize{test6.jpg}{Przypadek testowy 6}{0.75}
 				Wierzchołek $ E $ widoczny, gdy miotła pokrywa się z krawędzią $ BC $.
-				
-			\imgcustomsize{test7.jpg}{Przypadek testowy}{1}
-			\imgcustomsize{test8.jpg}{Przypadek testowy}{1}
-			\imgcustomsize{test9.jpg}{Przypadek testowy}{1}
-			\imgcustomsize{test10.jpg}{Przypadek testowy}{1}
+			
+			\imgcustomsize{przyklad1.jpg}{Przypadek testowy 'Przykład 1' zawarty w pliku Jupyter Notebook}{1}	
+			\imgcustomsize{test7.jpg}{Przypadek testowy 7}{1}
+			\imgcustomsize{test8.jpg}{Przypadek testowy 8}{1}
+			\imgcustomsize{test9.jpg}{Przypadek testowy 9}{1}
+			\imgcustomsize{test10.jpg}{Przypadek testowy 10}{1}
+			\newpage
 		
 		\subsection{Testy losowe}
-			Poniższe ilustracje przedstawiają losowe testy wykonane przy użyciu modułu \lstinline|plot_tool_helpers.py|.
+			Poniższe ilustracje przedstawiają losowe testy wykonane przy użyciu modułu \lstinline|plot_tool_helpers.py|. Testy polegają na generowaniu zadanej liczby kwadratów o wymiarach 1x1 i rozstawieniu ich w sposób losowy na płaszczyźnie o danych wymiarach.
 			
 			\imgcustomsize{test-losowe1.jpg}{8 figur na płaszczyźnie 7 x 7}{1}
 			\imgcustomsize{test-losowe2.jpg}{10 figur na płaszczyźnie 21 x 21}{1}
@@ -485,24 +502,38 @@ P = [Point(-2, -2), Point(4, 3)]
 			\imgcustomsize{test-losowe5.jpg}{50 figur na płaszczyźnie 31 x 31}{1}
 			\imgcustomsize{test-losowe6.jpg}{100 figur na płaszczyźnie 31 x 31}{1}
 		
-		\subsubsection{Czasy wykonania dla losowych figur}
+		\subsubsection{Czasy wykonania dla testów losowych} \label{sssec:times}
 			\begin{itemize}
-				\item 8 figur na płaszczyźnie 7 x 7 -- 0.02992 sekund
-				\item 10 figur na płaszczyźnie 21 x 21 -- 0.03509 sekund
-				\item 20 figur na płaszczyźnie 16 x 16 -- 0.15869 sekund
-				\item 25 figur na płaszczyźnie 31 x 31 -- 0.48271 sekund
-				\item 50 figur na płaszczyźnie 31 x 31 -- 2.22763 sekund
-				\item 100 figur na płaszczyźnie 31 x 31 -- 10.30278 sekund
+				\item 8 figur na płaszczyźnie 7 x 7 -- 0.04488 sekund
+				\item 10 figur na płaszczyźnie 21 x 21 -- 0.07081 sekund
+				\item 20 figur na płaszczyźnie 16 x 16 -- 0.31419 sekund
+				\item 25 figur na płaszczyźnie 31 x 31 -- 0.48368 sekund
+				\item 50 figur na płaszczyźnie 31 x 31 -- 2.2919 sekund
+				\item 100 figur na płaszczyźnie 31 x 31 -- 10.62454 sekund
+				\item 150 figur na płaszczyźnie 36 x 36 -- 25.89075 sekund
 			\end{itemize}
+			
+			\imgcustomsize{pomiary.jpg}{Czasy wykonania dla losowych figur}{0.75}
+			
+			Generowanymi losowo figurami są kwadraty, zatem liczba wierzchołków $ n $ jest proporcjonalna do liczby figur. Możemy zatem dopasować krzywą, aby oszacować otrzymaną złożoność algorytmu. Jak widać na powyższym wykresie, po dopasowaniu krzywych do ostatniego pomiaru, otrzymane czasu niemal idealnie pokrywają się z krzywą $ n^2 log(n) $, co świadczy o tym, że złożoność algorytmu jest zgodna z oczekiwaną.  
+			\newpage
+			
+		\subsection{Testy znajdowania najkrótszej ścieżki} \label{sssec:tests2}
+			
+			Poniżej przedstawiono przykłady zastosowania grafu widoczności do wyznaczenia najkrótszej ścieżki pomiędzy dwoma punktami na płaszczyźnie, na której znajdują się przeszkody w postaci wielokątów. Niebieską linią zaznaczono wyznaczoną ścieżkę, natomiast przeszkody oznaczono czerwoną przerywaną linią. Do szukania najkrótszej ścieżki w grafie zastosowane algorytm Dijkstry.
 		
-		\subsection{Testy znajdowania najkrótszej ścieżki}
+			\imgcustomsize{przyklad2.jpg}{Przypadek testowy 'Przykład 2' zawarty w pliku Jupyter Notebook}{1}
 			\imgcustomsize{p1.jpg}{Przypadek testowy}{0.75}
 			\imgcustomsize{p2.jpg}{Przypadek testowy}{0.75}
-	
+			\newpage
+			
 	\section{Wnioski}
 		\begin{itemize}
-			\item Algorytm poprawnie wykonuje testy,
-			\item Na podstawie testów czasowych złożoność zgadza się z oczekiwaną.
+			\item We wszystkich testowanych przypadkach, algorytm poprawnie wyznaczył graf widoczności. Wyniki testów w postaci graficznej zostały przedstawione w punkcie \ref{sssec:tests}.
+			\item Dzięki zastosowaniu algorytmu zamiatania i struktury zrównoważonego drzewa binarnego, udało się obniżyć złożoność z $ O(n^3) $ dla algorytmu trywialnego, do złożoności $ O(n^2 \cdot log(n)) $, czego potwierdzeniem są wyniki testów  czasowych w punkcie \ref{sssec:times}.
+			\item Przy użyciu wyznaczonego grafu widoczności udało się zaimplementować algorytm wyznaczania najkrótszej ścieżki pomiędzy dwoma punktami na płaszczyźnie, na której znajdują się przeszkody w postaci wielokątów. Kilka przykładów jego działania przedstawiono w punkcie \ref{sssec:tests2}.
+			
+			
 		\end{itemize}
 	
 	\section{Bibliografia}
